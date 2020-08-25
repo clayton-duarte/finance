@@ -1,6 +1,15 @@
 import { NextApiHandler } from "next";
+import { getSession } from "next-auth/client";
 
 import { ReqMethods } from "../../types";
+
+export function withSession(handler) {
+  return async function (req, res) {
+    const session = await getSession({ req });
+    if (session) return handler(req, res);
+    return res.status(401).end();
+  };
+}
 
 export function withParameterValidation(...parameters: string[]) {
   return function (handler: NextApiHandler) {
@@ -20,18 +29,15 @@ export function withParameterValidation(...parameters: string[]) {
   };
 }
 
-interface Handlers {
+const mapHandlerByMethod = (handlersByMethod: {
   [ReqMethods.DELETE]?: NextApiHandler;
   [ReqMethods.POST]?: NextApiHandler;
   [ReqMethods.PUT]?: NextApiHandler;
   [ReqMethods.GET]?: NextApiHandler;
-}
-
-const mapHandlerByMethod = (handlers: Handlers) => (req, res) => {
-  const availableHandler = handlers[req.method];
+}) => (req, res) => {
+  const availableHandler = handlersByMethod[req.method];
   if (availableHandler) return availableHandler(req, res);
-  res.status(405).send("Method not Allowed");
-  return;
+  return res.status(405).send("Method not Allowed");
 };
 
 export { mapHandlerByMethod };

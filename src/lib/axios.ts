@@ -1,9 +1,7 @@
 import Axios, { AxiosRequestConfig, AxiosError } from "axios";
-import { useRouter } from "next/router";
+import { signIn } from "next-auth/client";
 
 const useAxios = (token?: string) => {
-  const router = useRouter();
-
   function createAxiosConfig(): AxiosRequestConfig {
     const baseURL = `/api`;
     if (token) {
@@ -16,15 +14,14 @@ const useAxios = (token?: string) => {
 
   function errorHandler<T = any>(err: AxiosError<T>) {
     switch (err.response.status) {
-      case 405:
-      case 404:
-      case 403:
-      case 400:
-        console.log(err.response.data);
-        break;
       case 401:
-        router.push("/401");
-        break;
+        return signIn("cognito");
+      case 400:
+      case 403:
+      case 404:
+      case 405:
+        // TODO > Real error handling (use _error.tsx)
+        return console.log(err.response.data);
       default:
         throw new Error(JSON.stringify(err));
     }

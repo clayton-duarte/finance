@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/client";
 import { NextApiHandler } from "next";
 
 import { AccountModel } from "../mongoose/models";

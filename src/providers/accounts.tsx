@@ -5,10 +5,8 @@ import React, {
   useState,
   Dispatch,
 } from "react";
-import { useSession } from "next-auth/client";
 
 import LoadingPage from "../components/LoadingPage";
-import LoginPage from "../components/LoginPage";
 import { useAxios } from "../lib/axios";
 import { Account } from "../types";
 
@@ -71,11 +69,6 @@ const useAccounts = () => {
 
 const AccountsProvider: FunctionComponent = ({ children }) => {
   const [accounts, setAccounts] = useState<Account[]>(null);
-  const [session, loading] = useSession();
-
-  if (loading) return <LoadingPage />;
-
-  if (!session) return <LoginPage />;
 
   return (
     <AccountsContext.Provider value={{ accounts, setAccounts }}>

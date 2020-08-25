@@ -4,8 +4,8 @@ import Providers from "next-auth/providers";
 const options = {
   providers: [
     Providers.Cognito({
-      clientId: process.env.COGNITO_CLIENT_ID,
       clientSecret: process.env.COGNITO_CLIENT_SECRET,
+      clientId: process.env.COGNITO_CLIENT_ID,
       domain: process.env.COGNITO_DOMAIN,
     }),
   ],

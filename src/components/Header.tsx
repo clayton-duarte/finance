@@ -31,7 +31,7 @@ const UserName = styled.span`
 `;
 
 const Header: FunctionComponent = () => {
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const { rates } = useRates();
   const router = useRouter();
 
@@ -50,7 +50,7 @@ const Header: FunctionComponent = () => {
       <StyledHeader>
         <StyledTemplate>
           <FiHome role="button" onClick={handleClickHome} />
-          <UserName>Hello {session.user.name}!</UserName>
+          <UserName>Hello {session?.user?.name}</UserName>
           <FiLogOut role="button" onClick={handleClickExit} />
         </StyledTemplate>
       </StyledHeader>

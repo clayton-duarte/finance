@@ -1,4 +1,4 @@
-import { mapHandlerByMethod } from "../../server/lib/request";
+import { mapHandlerByMethod, withSession } from "../../server/lib/request";
 import {
   deleteAccount,
   getAccounts,
@@ -6,9 +6,11 @@ import {
   putAccounts,
 } from "../../server/controllers/accounts";
 
-export default mapHandlerByMethod({
-  DELETE: deleteAccount,
-  POST: postAccount,
-  PUT: putAccounts,
-  GET: getAccounts,
-});
+export default withSession(
+  mapHandlerByMethod({
+    DELETE: deleteAccount,
+    POST: postAccount,
+    PUT: putAccounts,
+    GET: getAccounts,
+  })
+);
