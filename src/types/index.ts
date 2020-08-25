@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Session } from "next-iron-session";
 
 // Enums
 export enum Currencies {
@@ -46,11 +45,7 @@ export interface ExchangeResponse {
 
 export type RatesResponse = ExchangeResponse["rates"];
 
-interface NextApiRequestWithSession extends NextApiRequest {
-  session: Session;
-}
-
 export type Handler<T = any> = (
-  req: NextApiRequestWithSession,
+  req: NextApiRequest,
   res: NextApiResponse<T>
 ) => void | Promise<void>;

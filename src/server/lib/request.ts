@@ -1,17 +1,5 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { withIronSession } from "next-iron-session";
-
 import { ReqMethods } from "../../types";
 import { Handler } from "../../types";
-
-function withSession<T = unknown>(handler: Handler<T>, isPrivate = true) {
-  // TODO > validate session
-  return withIronSession(handler, {
-    cookieOptions: { secure: process.env.NODE_ENV === "production" },
-    password: process.env.SESSION_PASSWORD,
-    cookieName: "finance-iron-session",
-  });
-}
 
 export function withParameterValidation(...parameters: string[]) {
   return function (handler: Handler) {
@@ -45,4 +33,4 @@ const mapHandlerByMethod = (handlers: Handlers) => (req, res) => {
   return;
 };
 
-export { mapHandlerByMethod, withSession };
+export { mapHandlerByMethod };

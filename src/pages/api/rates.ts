@@ -1,7 +1,6 @@
-import { withSession, mapHandlerByMethod } from "../../server/lib/request";
-import { ExchangeResponse } from "../../types";
+import { mapHandlerByMethod } from "../../server/lib/request";
 import { getRates } from "../../server/controllers/rates";
 
 export default mapHandlerByMethod({
-  GET: withSession<ExchangeResponse["rates"]>(getRates),
+  GET: getRates,
 });
