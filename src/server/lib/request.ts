@@ -1,8 +1,9 @@
+import { NextApiHandler } from "next";
+
 import { ReqMethods } from "../../types";
-import { Handler } from "../../types";
 
 export function withParameterValidation(...parameters: string[]) {
-  return function (handler: Handler) {
+  return function (handler: NextApiHandler) {
     return function (req, res) {
       const missingParameter = parameters.filter(
         (parameter) => !req.body[parameter] && !req.query[parameter]
@@ -15,15 +16,15 @@ export function withParameterValidation(...parameters: string[]) {
       }
 
       return handler(req, res);
-    } as Handler;
+    } as NextApiHandler;
   };
 }
 
 interface Handlers {
-  [ReqMethods.DELETE]?: Handler;
-  [ReqMethods.POST]?: Handler;
-  [ReqMethods.PUT]?: Handler;
-  [ReqMethods.GET]?: Handler;
+  [ReqMethods.DELETE]?: NextApiHandler;
+  [ReqMethods.POST]?: NextApiHandler;
+  [ReqMethods.PUT]?: NextApiHandler;
+  [ReqMethods.GET]?: NextApiHandler;
 }
 
 const mapHandlerByMethod = (handlers: Handlers) => (req, res) => {

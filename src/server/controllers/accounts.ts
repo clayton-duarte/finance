@@ -1,8 +1,10 @@
+import { getSession } from "next-auth/client";
+import { NextApiHandler } from "next";
+
 import { AccountModel } from "../mongoose/models";
-import { Handler } from "../../types";
 import dbConnect from "../mongoose/dbConnect";
 
-const getAccounts: Handler = async (req, res) => {
+const getAccounts: NextApiHandler = async (req, res) => {
   await dbConnect();
 
   try {
@@ -13,7 +15,7 @@ const getAccounts: Handler = async (req, res) => {
   }
 };
 
-const postAccount: Handler = async (req, res) => {
+const postAccount: NextApiHandler = async (req, res) => {
   const { account } = req.body;
 
   await dbConnect();
@@ -25,7 +27,7 @@ const postAccount: Handler = async (req, res) => {
   }
 };
 
-const putAccounts: Handler = async (req, res) => {
+const putAccounts: NextApiHandler = async (req, res) => {
   const { accounts } = req.body;
   await dbConnect();
 
@@ -44,7 +46,7 @@ const putAccounts: Handler = async (req, res) => {
   }
 };
 
-const deleteAccount: Handler = async (req, res) => {
+const deleteAccount: NextApiHandler = async (req, res) => {
   const { _id } = req.query;
   await dbConnect();
 

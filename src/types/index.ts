@@ -1,5 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
-
 // Enums
 export enum Currencies {
   CAD = "CAD",
@@ -44,8 +42,3 @@ export interface ExchangeResponse {
 }
 
 export type RatesResponse = ExchangeResponse["rates"];
-
-export type Handler<T = any> = (
-  req: NextApiRequest,
-  res: NextApiResponse<T>
-) => void | Promise<void>;

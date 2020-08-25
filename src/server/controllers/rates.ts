@@ -1,13 +1,14 @@
 import Axios, { AxiosRequestConfig } from "axios";
+import { NextApiHandler } from "next";
 
-import { ExchangeResponse, Handler } from "../../types";
+import { ExchangeResponse } from "../../types";
 import { Currencies } from "../../types";
 
 const axiosInstance = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_RATES_API,
 });
 
-const getRates: Handler = async (req, res) => {
+const getRates: NextApiHandler = async (req, res) => {
   const options: AxiosRequestConfig = {
     params: {
       symbols: Currencies.BRL,
