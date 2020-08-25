@@ -6,6 +6,7 @@ import { Currencies } from "../../types";
 const AccountSchema = new mongoose.Schema<Account>({
   name: { type: String, default: "" },
   amount: { type: Number, default: 0 },
+  email: String,
   currency: {
     type: String,
     enum: Object.values(Currencies),
