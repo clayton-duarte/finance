@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from "react";
 
-import { compareAccountByName, toCad, toBrl } from "../libs/math";
+import { toCad, toBrl, totalInBrl, totalInCad } from "../libs/math";
 import { humanizeBrl, humanizeCad } from "../libs/format";
+import { compareAccountByName } from "../libs/utils";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
@@ -58,16 +59,16 @@ const ResumeTable: FunctionComponent = () => {
   };
 
   const renderTotal = () => {
-    const totalCad = () => accounts.reduce((a, b) => a + toCad(rates, b), 0);
-    const totalBrl = () => accounts.reduce((a, b) => a + toBrl(rates, b), 0);
+    const totalCad = totalInCad(rates, accounts);
+    const totalBrl = totalInBrl(rates, accounts);
 
     return (
       <tr>
         <td className="total title">Total</td>
         <td className="total">
           {currency === Currencies.CAD
-            ? humanizeCad(totalCad())
-            : humanizeBrl(totalBrl())}
+            ? humanizeCad(totalCad)
+            : humanizeBrl(totalBrl)}
         </td>
       </tr>
     );

@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 
+import { toCad, toBrl, totalInCad, totalInBrl } from "../libs/math";
 import { humanizeBrl, humanizeCad } from "../libs/format";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
-import { toCad, toBrl } from "../libs/math";
 import { Currencies } from "../types";
 
 const StyledTitle = styled.h3`
@@ -33,29 +33,14 @@ const BigTotal: FunctionComponent = () => {
 
   if (!accounts || !currency || !rates) return null;
 
-  const totalByCurrency = (selectedCurrency: Currencies) => {
-    const filteredAccounts = accounts.filter(
-      ({ currency: accountCurrency }) => accountCurrency === selectedCurrency
-    );
-
-    const convertedAccounts = filteredAccounts.map((account) =>
-      currency === Currencies.CAD
-        ? toCad(rates, account)
-        : toBrl(rates, account)
-    );
-
-    return convertedAccounts.reduce((prev, curr) => prev + curr, 0);
+  const calcBigTotal = () => {
+    if (currency === Currencies.CAD) {
+      return humanizeCad(totalInCad(rates, accounts));
+    }
+    return humanizeBrl(totalInBrl(rates, accounts));
   };
 
-  const humanizedTotal = (total: number) => {
-    return currency === Currencies.CAD
-      ? humanizeCad(total)
-      : humanizeBrl(total);
-  };
-
-  const cadTotal = totalByCurrency(Currencies.CAD);
-  const brlTotal = totalByCurrency(Currencies.BRL);
-  const bigTotal = humanizedTotal(cadTotal + brlTotal);
+  const bigTotal = calcBigTotal();
 
   return (
     <>
