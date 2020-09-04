@@ -14,10 +14,10 @@ const formatCurrency: FormatFunction = (value: Big, lng) => {
 };
 
 // EXPORTS
-export function humanizeBrl(value: Big): string {
+export function humanizeBrl(value: Big | number): string {
   return formatCurrency(value, Locales["pt-BR"]);
 }
 
-export function humanizeCad(value: Big): string {
+export function humanizeCad(value: Big | number): string {
   return formatCurrency(value, Locales["en-CA"]);
 }

@@ -36,8 +36,8 @@ export const useCookies = () => {
   return {
     setCurrencyCookie,
     getCurrencyCookie,
+    deleteTokenCookie,
     setTokenCookie,
     getTokenCookie,
-    deleteTokenCookie,
   };
 };
