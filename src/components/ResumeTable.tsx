@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
-import { compareAccountByName, toCad, toBrl } from "../lib/math";
-import { humanizeBrl, humanizeCad } from "../lib/format";
+import { compareAccountByName, toCad, toBrl } from "../libs/math";
+import { humanizeBrl, humanizeCad } from "../libs/format";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { FiEdit, FiRefreshCw, FiGlobe } from "react-icons/fi";
 import { useRouter } from "next/router";
 
-import { humanizeBrl, humanizeCad } from "../lib/format";
+import { humanizeBrl, humanizeCad } from "../libs/format";
 import BalanceGraph from "../components/BalanceGraph";
 import LoadingPage from "../components/LoadingPage";
 import ResumeTable from "../components/ResumeTable";

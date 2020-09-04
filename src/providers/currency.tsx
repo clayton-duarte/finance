@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import Head from "next/head";
 
-import { useCookies } from "../lib/cookies";
+import { useCookies } from "../libs/cookies";
 import { Currencies } from "../types";
 
 const CurrencyContext = createContext<{

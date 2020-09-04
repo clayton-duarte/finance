@@ -7,7 +7,7 @@ import React, {
 } from "react";
 
 import LoadingPage from "../components/LoadingPage";
-import { useAxios } from "../lib/axios";
+import { useAxios } from "../libs/axios";
 import { Account } from "../types";
 
 const AccountsContext = createContext<{

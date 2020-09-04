@@ -7,7 +7,7 @@ import React, {
 } from "react";
 
 import { RatesResponse } from "../types";
-import { useAxios } from "../lib/axios";
+import { useAxios } from "../libs/axios";
 
 const RatesContext = createContext<{
   setRates: Dispatch<RatesResponse>;
