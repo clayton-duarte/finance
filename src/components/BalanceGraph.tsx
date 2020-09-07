@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
 import Big from "big.js";
 
-import { toCad, toBrl, reduceTotal, totalByCurrency } from "../libs/math";
 import { humanizeBrl, humanizeCad } from "../libs/format";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
+import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 
 const PercentBar = styled.section<{ percent: Big }>`
@@ -29,6 +29,7 @@ const PercentBar = styled.section<{ percent: Big }>`
 const BalanceText = styled.span``;
 
 const BalanceGraph: FunctionComponent = () => {
+  const { totalByCurrency } = useMath();
   const { accounts } = useAccounts();
   const { currency } = useCurrency();
   const { rates } = useRates();
@@ -41,8 +42,8 @@ const BalanceGraph: FunctionComponent = () => {
       : humanizeBrl(total);
   };
 
-  const cadTotal = totalByCurrency(rates, accounts, Currencies.CAD, currency);
-  const brlTotal = totalByCurrency(rates, accounts, Currencies.BRL, currency);
+  const cadTotal = totalByCurrency(Currencies.CAD);
+  const brlTotal = totalByCurrency(Currencies.BRL);
   const percent = cadTotal.div(cadTotal.plus(brlTotal)).times(100);
 
   return (

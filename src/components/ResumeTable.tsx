@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
 
-import { toCad, toBrl, totalInBrl, totalInCad } from "../libs/math";
 import { humanizeBrl, humanizeCad } from "../libs/format";
 import { compareAccountByName } from "../libs/utils";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
+import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 
 const StyledTable = styled.table`
@@ -42,6 +42,7 @@ const ResumeTable: FunctionComponent = () => {
   const { currency } = useCurrency();
   const { accounts } = useAccounts();
   const { rates } = useRates();
+  const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
 
   if (!accounts || !rates) return null;
 
@@ -51,16 +52,16 @@ const ResumeTable: FunctionComponent = () => {
         <td className="title">{account.name}</td>
         <td>
           {currency === Currencies.CAD
-            ? humanizeCad(toCad(rates, account))
-            : humanizeBrl(toBrl(rates, account))}
+            ? humanizeCad(toCad(account))
+            : humanizeBrl(toBrl(account))}
         </td>
       </tr>
     ));
   };
 
   const renderTotal = () => {
-    const totalCad = totalInCad(rates, accounts);
-    const totalBrl = totalInBrl(rates, accounts);
+    const totalCad = totalInCad(accounts);
+    const totalBrl = totalInBrl(accounts);
 
     return (
       <tr>

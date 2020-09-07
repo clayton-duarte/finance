@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 
-import { toCad, toBrl, totalInCad, totalInBrl } from "../libs/math";
 import { humanizeBrl, humanizeCad } from "../libs/format";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
+import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 
 const StyledTitle = styled.h3`
@@ -30,14 +30,15 @@ const BigTotal: FunctionComponent = () => {
   const { accounts } = useAccounts();
   const { currency } = useCurrency();
   const { rates } = useRates();
+  const { totalInCad, totalInBrl } = useMath();
 
   if (!accounts || !currency || !rates) return null;
 
   const calcBigTotal = () => {
     if (currency === Currencies.CAD) {
-      return humanizeCad(totalInCad(rates, accounts));
+      return humanizeCad(totalInCad());
     }
-    return humanizeBrl(totalInBrl(rates, accounts));
+    return humanizeBrl(totalInBrl());
   };
 
   const bigTotal = calcBigTotal();

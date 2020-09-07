@@ -1,74 +1,69 @@
 import Big from "big.js";
 
-import { Account, RatesResponse, Currencies } from "../types";
+import { useCurrency } from "../providers/currency";
+import { useAccounts } from "../providers/accounts";
+import { Account, Currencies } from "../types";
+import { useRates } from "../providers/rates";
 
-// SETUP
-function getRate(currency: Currencies, rates: RatesResponse): Big {
-  if (currency === Currencies.CAD) return Big(1);
-  return Big(rates.BRL);
-}
+export const useMath = () => {
+  const { accounts: defaultAccounts } = useAccounts();
+  const { currency: currentCurrency } = useCurrency();
+  const { rates } = useRates();
 
-// EXPORTS
-export function toCad(rates: RatesResponse, account: Account): Big {
-  const rate = getRate(account.currency, rates);
-  const amount = Big(account.amount);
+  const toCad = (account: Account): Big => {
+    return Big(account.amount).div(
+      account.currency === Currencies.BRL ? Big(rates.BRL) : Big(1)
+    );
+  };
 
-  return amount.div(rate);
-}
+  const toBrl = (account: Account): Big => {
+    return Big(account.amount).times(
+      account.currency === Currencies.CAD ? Big(rates.BRL) : Big(1)
+    );
+  };
 
-export function allToCad(rates: RatesResponse, accounts: Account[]): Big[] {
-  return accounts.map((account) => {
-    const amountInCad = toCad(rates, account);
-    return amountInCad;
-  });
-}
+  const allToCad = (accounts: Account[] = defaultAccounts): Big[] => {
+    return accounts.map((account) => toCad(account));
+  };
 
-export function toBrl(rates: RatesResponse, account: Account): Big {
-  const rate = getRate(account.currency, rates);
-  const amount = Big(account.amount);
+  const allToBrl = (accounts: Account[] = defaultAccounts): Big[] => {
+    return accounts.map((account) => toBrl(account));
+  };
 
-  return amount.times(rate);
-}
+  const reduceTotal = (values: Big[]): Big => {
+    return values.reduce((acc, curr): Big => acc.plus(curr), Big(0));
+  };
 
-export function allToBrl(rates: RatesResponse, accounts: Account[]): Big[] {
-  return accounts.map((account) => {
-    const amountInCad = toBrl(rates, account);
-    return amountInCad;
-  });
-}
+  const totalInCad = (accounts: Account[] = defaultAccounts): Big => {
+    return reduceTotal(allToCad(accounts));
+  };
 
-export function reduceTotal(values: Big[]): Big {
-  return values.reduce((acc, currentValue): Big => {
-    return acc.plus(currentValue);
-  }, Big(0));
-}
+  const totalInBrl = (accounts: Account[] = defaultAccounts): Big => {
+    return reduceTotal(allToBrl(accounts));
+  };
 
-export function totalInCad(rates: RatesResponse, accounts: Account[]): Big {
-  return reduceTotal(allToCad(rates, accounts));
-}
+  const filterAccountByCurrency = (selectedCurrency: Currencies): Account[] => {
+    return defaultAccounts.filter(({ currency: accountCurrency }) => {
+      return accountCurrency === selectedCurrency;
+    });
+  };
 
-export function totalInBrl(rates: RatesResponse, accounts: Account[]): Big {
-  return reduceTotal(allToBrl(rates, accounts));
-}
+  const totalByCurrency = (selectedCurrency: Currencies): Big => {
+    const filteredAccounts = filterAccountByCurrency(selectedCurrency);
 
-export function filterAccountByCurrency(
-  accounts: Account[],
-  selectedCurrency: Currencies
-): Account[] {
-  return accounts.filter(({ currency: accountCurrency }) => {
-    return accountCurrency === selectedCurrency;
-  });
-}
+    return currentCurrency === Currencies.CAD
+      ? totalInCad(filteredAccounts)
+      : totalInBrl(filteredAccounts);
+  };
 
-export function totalByCurrency(
-  rates: RatesResponse,
-  accounts: Account[],
-  selectedCurrency: Currencies,
-  currentCurrency: Currencies
-): Big {
-  const filteredAccounts = filterAccountByCurrency(accounts, selectedCurrency);
-  if (currentCurrency === Currencies.CAD) {
-    return totalInCad(rates, filteredAccounts);
-  }
-  return totalInBrl(rates, filteredAccounts);
-}
+  return {
+    toCad,
+    toBrl,
+    allToCad,
+    allToBrl,
+    reduceTotal,
+    totalInCad,
+    totalInBrl,
+    totalByCurrency,
+  };
+};
