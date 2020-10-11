@@ -57,13 +57,13 @@ export const useMath = () => {
   };
 
   return {
-    toCad,
-    toBrl,
-    allToCad,
-    allToBrl,
+    totalByCurrency,
     reduceTotal,
     totalInCad,
     totalInBrl,
-    totalByCurrency,
+    allToCad,
+    allToBrl,
+    toCad,
+    toBrl,
   };
 };

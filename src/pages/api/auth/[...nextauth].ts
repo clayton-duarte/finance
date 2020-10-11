@@ -2,28 +2,13 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 
 const options = {
+  debug: process.env.NODE_ENV === "development",
   providers: [
-    Providers.Cognito({
-      clientSecret: process.env.COGNITO_CLIENT_SECRET,
-      clientId: process.env.COGNITO_CLIENT_ID,
-      domain: process.env.COGNITO_DOMAIN,
+    Providers.Google({
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID,
     }),
   ],
-  // debug: true,
-  callback: {
-    redirect: async (url, baseUrl) => {
-      console.log("redirect", url, baseUrl);
-      return Promise.resolve(baseUrl);
-    },
-  },
-  events: {
-    signIn: async (message) => {
-      console.log("signIn", message);
-    },
-    signOut: async (message) => {
-      console.log("signOut", message);
-    },
-  },
 };
 
 export default (req, res) => NextAuth(req, res, options);

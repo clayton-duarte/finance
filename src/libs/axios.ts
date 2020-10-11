@@ -15,7 +15,7 @@ const useAxios = (token?: string) => {
   function errorHandler<T = any>(err: AxiosError<T>) {
     switch (err.response.status) {
       case 401:
-        return signIn("cognito");
+        return signIn("google");
       case 400:
       case 403:
       case 404:

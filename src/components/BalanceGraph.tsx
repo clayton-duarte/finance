@@ -44,7 +44,10 @@ const BalanceGraph: FunctionComponent = () => {
 
   const cadTotal = totalByCurrency(Currencies.CAD);
   const brlTotal = totalByCurrency(Currencies.BRL);
-  const percent = cadTotal.div(cadTotal.plus(brlTotal)).times(100);
+  const allTotal = cadTotal.plus(brlTotal);
+
+  const isAllTotalZero = Number(allTotal) === 0;
+  const percent = isAllTotalZero ? allTotal : cadTotal.div(allTotal).times(100);
 
   return (
     <PercentBar percent={percent}>

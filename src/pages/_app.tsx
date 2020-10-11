@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { Provider as AuthProvider } from "next-auth/client";
 
 import { AppProps } from "next/app";
@@ -13,6 +13,14 @@ const MyApp: FunctionComponent<AppProps> = ({
   pageProps,
   router,
 }) => {
+  useEffect(() => {
+    // CLEAN AS PATH
+    if (router.asPath.includes("#")) {
+      const newPath = router.asPath.replace("#", "");
+      router.replace(router.route, newPath);
+    }
+  }, [router.asPath]);
+
   return (
     <AuthProvider session={pageProps.session}>
       <CurrencyProvider>
