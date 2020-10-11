@@ -16,8 +16,9 @@ export interface Palette {
 }
 
 enum Shape {
+  shadow = "0 0 .5rem rgba(0,0,0,0.3)",
+  shadow_alt = "0 0 0 rgba(0,0,0,0.3)",
   border = "2px solid rgba(0,0,0,0.3)",
-  shadow = "0 0 0 transparent",
   radius = "0.25rem",
 }
 

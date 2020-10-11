@@ -7,16 +7,15 @@ import React, {
 import { FiCheck, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 
-import LoadingPage from "../components/LoadingPage";
-import { useAccounts } from "../providers/accounts";
-import { Currencies, Account } from "../types";
-import Template from "../components/Template";
-import { useRates } from "../providers/rates";
-import { styled } from "../providers/theme";
-import Select from "../components/Select";
-import Input from "../components/Input";
-import Title from "../components/Title";
-import Label from "../components/Label";
+import LoadingPage from "../../components/LoadingPage";
+import { useAccounts } from "../../providers/accounts";
+import { Currencies, Account } from "../../types";
+import Template from "../../components/Template";
+import { styled } from "../../providers/theme";
+import Select from "../../components/Select";
+import Input from "../../components/Input";
+import Title from "../../components/Title";
+import Label from "../../components/Label";
 
 const FormWrapper = styled.div`
   color: ${(props) => props.theme.palette.PRIMARY};
@@ -30,16 +29,9 @@ const InputWrapper = styled.div`
   gap: 1rem;
 `;
 
-const initialData: Account = {
-  currency: Currencies.CAD,
-  amount: null,
-  name: "",
-};
-
 const TablesPage: FunctionComponent = () => {
-  const { accounts, getAccounts, postAccount } = useAccounts();
-  const [formData, setFormData] = useState<Account>(initialData);
-  const { rates, getRates } = useRates();
+  const { accounts, getAccounts, updateAccount } = useAccounts();
+  const [formData, setFormData] = useState<Account>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,10 +39,12 @@ const TablesPage: FunctionComponent = () => {
   }, [accounts]);
 
   useEffect(() => {
-    getRates();
-  }, [rates]);
+    if (accounts) {
+      setFormData(accounts.find(({ _id }) => _id === router.query._id));
+    }
+  }, [accounts]);
 
-  if (!accounts || !rates) return <LoadingPage />;
+  if (!accounts || !formData) return <LoadingPage />;
 
   const handleChangeCurrency = (value: Currencies) => {
     setFormData({ ...formData, currency: value });
@@ -70,21 +64,21 @@ const TablesPage: FunctionComponent = () => {
           <FiX
             role="button"
             onClick={() => {
-              router.push("/");
+              router.push("/edit");
             }}
           />
           <span />
           <FiCheck
             role="button"
             onClick={async () => {
-              await postAccount(formData);
+              await updateAccount(formData);
               router.push("/");
             }}
           />
         </>
       }
     >
-      <Title>add new account</Title>
+      <Title>edit account</Title>
       <FormWrapper>
         <Label>Account Name</Label>
         <Input

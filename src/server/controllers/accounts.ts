@@ -31,22 +31,21 @@ const postAccount: NextApiHandler = async (req, res) => {
   }
 };
 
-const putAccounts: NextApiHandler = async (req, res) => {
+const putAccount: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
   const { email } = session.user;
-  const { accounts } = req.body;
+  const { account } = req.body;
   await dbConnect();
 
   try {
-    accounts.forEach(async ({ _id, amount, currency }) => {
-      const doc = {
+    const results = await AccountModel.updateOne(
+      { _id: account._id, email },
+      {
         updatedAt: Date.now(),
-        currency,
-        amount,
-      };
-      await AccountModel.updateOne({ _id, email }, doc);
-    });
-    res.json(accounts);
+        ...account,
+      }
+    );
+    res.json(results);
   } catch (error) {
     res.status(502).send(error);
   }
@@ -66,4 +65,4 @@ const deleteAccount: NextApiHandler = async (req, res) => {
   }
 };
 
-export { deleteAccount, getAccounts, postAccount, putAccounts };
+export { deleteAccount, getAccounts, postAccount, putAccount };

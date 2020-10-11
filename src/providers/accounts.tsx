@@ -1,12 +1,11 @@
 import React, {
-  createContext,
   FunctionComponent,
+  createContext,
   useContext,
   useState,
   Dispatch,
 } from "react";
 
-import LoadingPage from "../components/LoadingPage";
 import { useAxios } from "../libs/axios";
 import { Account } from "../types";
 
@@ -53,18 +52,16 @@ const useAccounts = () => {
     }
   };
 
-  const updateAccounts = async (updatedAccounts: Account[]) => {
+  const updateAccount = async (updatedAccount: Account) => {
     try {
-      const { data } = await axios.put<Account[]>("/accounts", {
-        accounts: updatedAccounts,
-      });
-      setAccounts(data);
+      await axios.put<Account>("/accounts", { account: updatedAccount });
+      getAccounts(true);
     } catch (err) {
-      errorHandler<Account[]>(err);
+      errorHandler<Account>(err);
     }
   };
 
-  return { accounts, deleteAccount, getAccounts, postAccount, updateAccounts };
+  return { accounts, deleteAccount, getAccounts, postAccount, updateAccount };
 };
 
 const AccountsProvider: FunctionComponent = ({ children }) => {

@@ -3,7 +3,6 @@ import { signOut, useSession } from "next-auth/client";
 import { FiHome, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 
-import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
 
 const StyledHeader = styled.header`
@@ -32,10 +31,7 @@ const UserName = styled.span`
 
 const Header: FunctionComponent = () => {
   const [session] = useSession();
-  const { rates } = useRates();
   const router = useRouter();
-
-  if (!rates) return null;
 
   const handleClickHome = () => {
     router.push("/");

@@ -1,42 +1,14 @@
 import React, { FunctionComponent } from "react";
+import Link from "next/link";
 
 import { humanizeBrl, humanizeCad } from "../libs/format";
 import { compareAccountByName } from "../libs/utils";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
-import { styled } from "../providers/theme";
+import Table from "../components/Table";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
-
-const StyledTable = styled.table`
-  border-radius: ${(props) => props.theme.shape.radius};
-  border-collapse: collapse;
-  overflow: hidden;
-  max-width: 100%;
-  width: 100%;
-
-  th {
-    color: ${(props) => props.theme.palette.PRIMARY};
-  }
-
-  td {
-    border: 2px solid ${(props) => props.theme.palette.SECONDARY};
-    text-transform: capitalize;
-    padding: 0.25rem 0.5rem;
-    text-align: right;
-    width: 50%;
-  }
-
-  td.total {
-    background: ${(props) => props.theme.palette.SECONDARY};
-    color: ${(props) => props.theme.palette.BG};
-  }
-
-  td.title {
-    text-align: left;
-  }
-`;
 
 const ResumeTable: FunctionComponent = () => {
   const { currency } = useCurrency();
@@ -65,8 +37,8 @@ const ResumeTable: FunctionComponent = () => {
 
     return (
       <tr>
-        <td className="total title">Total</td>
-        <td className="total">
+        <td>Total</td>
+        <td>
           {currency === Currencies.CAD
             ? humanizeCad(totalCad)
             : humanizeBrl(totalBrl)}
@@ -76,14 +48,12 @@ const ResumeTable: FunctionComponent = () => {
   };
 
   return (
-    <>
-      <StyledTable>
-        <tbody>
-          {renderTotal()}
-          {renderAccounts()}
-        </tbody>
-      </StyledTable>
-    </>
+    <Link href="/edit">
+      <Table>
+        <thead>{renderTotal()}</thead>
+        <tbody>{renderAccounts()}</tbody>
+      </Table>
+    </Link>
   );
 };
 
