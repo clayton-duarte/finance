@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, MouseEvent } from "react";
 import { FiArrowLeft, FiTrash2, FiEdit, FiPlusSquare } from "react-icons/fi";
 import { useRouter } from "next/router";
 
@@ -41,12 +41,12 @@ const TablesPage: FunctionComponent = () => {
 
   if (!accounts) return <LoadingPage />;
 
-  const handleClickEdit = (_id: string) => () => {
+  const handleClickEdit = (_id: string) => (e: MouseEvent) => {
     router.push("/edit/[_id]", `/edit/${_id}`);
     e.stopPropagation();
   };
 
-  const handleClickDelete = (_id: string) => (e) => {
+  const handleClickDelete = (_id: string) => (e: MouseEvent) => {
     router.push("/delete/[_id]", `/delete/${_id}`);
     e.stopPropagation();
   };
