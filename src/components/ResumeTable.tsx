@@ -1,8 +1,10 @@
 import React, { FunctionComponent } from "react";
+import { useSession } from "next-auth/client";
+import { FiLink } from "react-icons/fi";
 import Link from "next/link";
 
 import { humanizeBrl, humanizeCad } from "../libs/format";
-import { compareAccountByName } from "../libs/utils";
+import { sortAccountByAmount } from "../libs/utils";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
@@ -11,24 +13,30 @@ import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 
 const ResumeTable: FunctionComponent = () => {
+  const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
+  const [session, loading] = useSession();
   const { currency } = useCurrency();
   const { accounts } = useAccounts();
   const { rates } = useRates();
-  const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
 
-  if (!accounts || !rates) return null;
+  if (!accounts || !rates || loading) return null;
 
   const renderAccounts = () => {
-    return accounts.sort(compareAccountByName).map((account) => (
-      <tr key={account.name}>
-        <td className="title">{account.name}</td>
-        <td>
-          {currency === Currencies.CAD
-            ? humanizeCad(toCad(account))
-            : humanizeBrl(toBrl(account))}
-        </td>
-      </tr>
-    ));
+    return accounts.sort(sortAccountByAmount).map((account) => {
+      const isExternalAccount = account.email !== session.user.email;
+      return (
+        <tr key={account.name}>
+          <td className="title">
+            {isExternalAccount && <FiLink />} {account.name}
+          </td>
+          <td>
+            {currency === Currencies.CAD
+              ? humanizeCad(toCad(account))
+              : humanizeBrl(toBrl(account))}
+          </td>
+        </tr>
+      );
+    });
   };
 
   const renderTotal = () => {
