@@ -30,6 +30,7 @@ export interface LoginData {
 export interface Account {
   currency: Currencies;
   amount: number;
+  email: string;
   name: string;
   _id?: string;
 }

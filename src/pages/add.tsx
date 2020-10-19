@@ -32,6 +32,7 @@ const InputWrapper = styled.div`
 
 const initialData: Account = {
   currency: Currencies.CAD,
+  email: undefined,
   amount: null,
   name: "",
 };

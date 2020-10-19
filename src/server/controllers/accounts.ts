@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
 import { getSession } from "next-auth/client";
 
-import { AccountModel } from "../mongoose/models";
+import { AccountModel, ProfileModel } from "../mongoose/models";
 import dbConnect from "../mongoose/dbConnect";
 
 const getAccounts: NextApiHandler = async (req, res) => {
@@ -10,8 +10,11 @@ const getAccounts: NextApiHandler = async (req, res) => {
   await dbConnect();
 
   try {
-    const results = await AccountModel.find({ email });
-    res.json(results);
+    const sharedProfile = await ProfileModel.findOne({ share: email });
+    const accounts = await AccountModel.find({
+      $or: [{ email }, { email: sharedProfile?.email }],
+    });
+    res.json(accounts);
   } catch (error) {
     res.status(502).send(error);
   }

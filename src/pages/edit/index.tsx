@@ -1,16 +1,18 @@
 import React, { FunctionComponent, useEffect, MouseEvent } from "react";
 import { FiArrowLeft, FiTrash2, FiEdit, FiPlusSquare } from "react-icons/fi";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 import LoadingPage from "../../components/LoadingPage";
 import { useAccounts } from "../../providers/accounts";
+import { sortAccountByEmail } from "../../libs/utils";
 import Template from "../../components/Template";
 import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
 import Grid from "../../components/Grid";
 
-const Card = styled.section`
+const Card = styled.section<{ disabled: boolean }>`
   border-radius: ${(props) => props.theme.shape.radius};
   box-shadow: ${(props) => props.theme.shape.shadow};
   color: ${(props) => props.theme.palette.PRIMARY};
@@ -25,21 +27,34 @@ const Card = styled.section`
     align-self: center;
     font-size: 1.5rem;
   }
+  ${(props) =>
+    props.disabled &&
+    `
+  filter: grayscale(100%);
+  pointer-events: none;
+  `}
 `;
 
 const StyledText = styled.p`
   margin: 0;
 `;
 
+const StyledSpan = styled.span`
+  color: ${(props) => props.theme.palette.SECONDARY};
+  text-transform: lowercase;
+  font-size: 0.75rem;
+`;
+
 const TablesPage: FunctionComponent = () => {
   const { accounts, getAccounts } = useAccounts();
+  const [session, loading] = useSession();
   const router = useRouter();
 
   useEffect(() => {
     getAccounts();
   }, [accounts]);
 
-  if (!accounts) return <LoadingPage />;
+  if (!accounts || loading) return <LoadingPage />;
 
   const handleClickEdit = (_id: string) => (e: MouseEvent) => {
     router.push("/edit/[_id]", `/edit/${_id}`);
@@ -72,18 +87,32 @@ const TablesPage: FunctionComponent = () => {
       }
     >
       <Title>Edit accounts</Title>
-      {accounts.map(({ _id, name, amount, currency }) => (
-        <Card key={_id} onClick={handleClickEdit(_id)}>
-          <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
-          <Grid>
-            <Label>{name}</Label>
-            <StyledText>
-              {amount} {currency}
-            </StyledText>
-          </Grid>
-          <FiEdit role="button" onClick={handleClickEdit(_id)} />
-        </Card>
-      ))}
+      {accounts.sort(sortAccountByEmail).map((account) => {
+        const { _id, name, amount, currency, email } = account;
+        const isExternalAccount = email !== session?.user?.email;
+        return (
+          <Card
+            disabled={isExternalAccount}
+            onClick={handleClickEdit(_id)}
+            key={_id}
+          >
+            {!isExternalAccount && (
+              <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
+            )}
+            <Grid>
+              <Label>
+                {name} {isExternalAccount && <StyledSpan>({email})</StyledSpan>}
+              </Label>
+              <StyledText>
+                {amount} {currency}
+              </StyledText>
+            </Grid>
+            {!isExternalAccount && (
+              <FiEdit role="button" onClick={handleClickEdit(_id)} />
+            )}
+          </Card>
+        );
+      })}
     </Template>
   );
 };
