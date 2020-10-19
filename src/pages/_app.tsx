@@ -6,6 +6,7 @@ import { AppProps } from "next/app";
 import ThemeProvider, { GlobalStyle } from "../providers/theme";
 import CurrencyProvider from "../providers/currency";
 import AccountsProvider from "../providers/accounts";
+import ProfileProvider from "../providers/profile";
 import RatesProvider from "../providers/rates";
 
 const MyApp: FunctionComponent<AppProps> = ({
@@ -26,9 +27,11 @@ const MyApp: FunctionComponent<AppProps> = ({
       <CurrencyProvider>
         <ThemeProvider>
           <RatesProvider>
-            <AccountsProvider>
-              <Component {...pageProps} key={router.route} />
-            </AccountsProvider>
+            <ProfileProvider>
+              <AccountsProvider>
+                <Component {...pageProps} key={router.route} />
+              </AccountsProvider>
+            </ProfileProvider>
           </RatesProvider>
           <GlobalStyle />
         </ThemeProvider>

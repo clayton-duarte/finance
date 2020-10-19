@@ -35,9 +35,9 @@ export interface Account {
 }
 
 export interface Profile {
-  share?: string[];
   email: string;
   name: string;
+  share?: string;
   _id?: string;
 }
 

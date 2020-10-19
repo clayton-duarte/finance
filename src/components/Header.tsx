@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { signOut, useSession } from "next-auth/client";
-import { FiHome, FiLogOut } from "react-icons/fi";
+import { useSession } from "next-auth/client";
+import { FiHome, FiUser } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 import { styled } from "../providers/theme";
@@ -37,8 +37,8 @@ const Header: FunctionComponent = () => {
     router.push("/");
   };
 
-  const handleClickExit = () => {
-    signOut();
+  const handleClickProfile = () => {
+    router.push("/profile");
   };
 
   return (
@@ -47,7 +47,7 @@ const Header: FunctionComponent = () => {
         <StyledTemplate>
           <FiHome role="button" onClick={handleClickHome} />
           <UserName>Hello {session?.user?.name}</UserName>
-          <FiLogOut role="button" onClick={handleClickExit} />
+          <FiUser role="button" onClick={handleClickProfile} />
         </StyledTemplate>
       </StyledHeader>
     </>

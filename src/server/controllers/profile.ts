@@ -6,8 +6,7 @@ import dbConnect from "../mongoose/dbConnect";
 
 const putProfile: NextApiHandler = async (req, res) => {
   const session = await getSession({ req });
-  const { email } = session.user;
-  const { share } = req.body;
+  const { email, ...profile } = session.user;
   await dbConnect();
 
   try {
@@ -15,7 +14,7 @@ const putProfile: NextApiHandler = async (req, res) => {
       { email },
       {
         updatedAt: Date.now(),
-        share,
+        ...profile,
       }
     );
     res.json(results);
