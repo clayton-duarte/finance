@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState, ChangeEvent } from "react";
+import React, {
+  FunctionComponent,
+  ChangeEvent,
+  useEffect,
+  useState,
+} from "react";
 import { signOut, useSession } from "next-auth/client";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import { useRouter } from "next/router";
@@ -6,7 +11,6 @@ import { useRouter } from "next/router";
 import LoadingPage from "../components/LoadingPage";
 import { useProfile } from "../providers/profile";
 import Template from "../components/Template";
-import { styled } from "../providers/theme";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Title from "../components/Title";
@@ -15,10 +19,20 @@ import Grid from "../components/Grid";
 import { Profile } from "../types";
 
 const TablesPage: FunctionComponent = () => {
+  const { profile, getProfile, updateProfile } = useProfile();
   const [formData, setFormData] = useState<Profile>(null);
   const [session, loading] = useSession();
-  const { updateProfile } = useProfile();
   const router = useRouter();
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  useEffect(() => {
+    if (profile) {
+      setFormData(profile);
+    }
+  }, [profile]);
 
   if (loading) return <LoadingPage />;
 
@@ -26,6 +40,9 @@ const TablesPage: FunctionComponent = () => {
     updateProfile(formData);
   };
 
+  const handleClickBack = () => {
+    router.push("/");
+  };
   const handleChangeData = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -37,12 +54,7 @@ const TablesPage: FunctionComponent = () => {
     <Template
       footerChildren={
         <>
-          <FiArrowLeft
-            role="button"
-            onClick={() => {
-              router.push("/");
-            }}
-          />
+          <FiArrowLeft role="button" onClick={handleClickBack} />
           <span />
           <FiCheck role="button" onClick={handleSubmit} />
         </>
@@ -53,8 +65,9 @@ const TablesPage: FunctionComponent = () => {
         <Label>name</Label>
         <Input
           onChange={handleChangeData}
-          value={session.user.name}
+          value={session?.user?.name}
           name="name"
+          disabled
           readOnly
         />
       </Grid>
@@ -62,14 +75,20 @@ const TablesPage: FunctionComponent = () => {
         <Label>email</Label>
         <Input
           onChange={handleChangeData}
-          value={session.user.email}
+          value={session?.user?.email}
           name="email"
+          disabled
           readOnly
         />
       </Grid>
       <Grid>
         <Label>share accounts with</Label>
-        <Input type="email" name="share" onChange={handleChangeData} />
+        <Input
+          onChange={handleChangeData}
+          value={formData?.share}
+          name="share"
+          type="email"
+        />
       </Grid>
       <Button onClick={signOut}>logout</Button>
     </Template>

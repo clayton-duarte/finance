@@ -20,17 +20,26 @@ const useProfile = () => {
   const { axios, errorHandler } = useAxios();
   const router = useRouter();
 
+  const getProfile = async () => {
+    try {
+      const { data } = await axios.get<Profile>("/profile");
+      setProfile(data);
+    } catch (err) {
+      errorHandler<Profile>(err);
+    }
+  };
+
   const updateProfile = async (profile: Profile) => {
     try {
       const { data } = await axios.put<Profile>("/profile", { profile });
       setProfile(data);
       router.push("/");
     } catch (err) {
-      errorHandler<Account>(err);
+      errorHandler<Profile>(err);
     }
   };
 
-  return { profile, updateProfile };
+  return { profile, getProfile, updateProfile };
 };
 
 const AccountsProvider: FunctionComponent = ({ children }) => {

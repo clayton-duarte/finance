@@ -14,7 +14,7 @@ const AccountSchema = new mongoose.Schema<Account>({
 });
 
 const ProfileSchema = new mongoose.Schema<Profile>({
-  share: [String],
+  share: String,
   email: String,
   name: String,
 });
