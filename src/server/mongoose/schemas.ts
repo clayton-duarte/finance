@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 
-import { Account } from "../../types";
-import { Currencies } from "../../types";
+import { Currencies, Account, Profile } from "../../types";
 
 const AccountSchema = new mongoose.Schema<Account>({
-  name: { type: String, default: "" },
   amount: { type: Number, default: 0 },
+  name: { type: String, default: "" },
   email: String,
   currency: {
     type: String,
@@ -14,4 +13,10 @@ const AccountSchema = new mongoose.Schema<Account>({
   },
 });
 
-export { AccountSchema };
+const ProfileSchema = new mongoose.Schema<Profile>({
+  share: [String],
+  email: String,
+  name: String,
+});
+
+export { AccountSchema, ProfileSchema };

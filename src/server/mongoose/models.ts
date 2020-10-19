@@ -1,7 +1,7 @@
 import mongoose, { Document } from "mongoose";
 
-import { Account } from "../../types";
-import { AccountSchema } from "./schemas";
+import { AccountSchema, ProfileSchema } from "./schemas";
+import { Account, Profile } from "../../types";
 
 function initializeModel<Type>(model, schema) {
   type Doc = Type & Document;
@@ -10,5 +10,6 @@ function initializeModel<Type>(model, schema) {
 }
 
 const AccountModel = initializeModel<Account[]>("Account", AccountSchema);
+const ProfileModel = initializeModel<Profile>("Profile", ProfileSchema);
 
-export { AccountModel };
+export { AccountModel, ProfileModel };

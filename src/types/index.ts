@@ -28,11 +28,19 @@ export interface LoginData {
 }
 
 export interface Account {
-  _id?: string;
   currency: Currencies;
   amount: number;
   name: string;
+  _id?: string;
 }
+
+export interface Profile {
+  share?: string[];
+  email: string;
+  name: string;
+  _id?: string;
+}
+
 export interface ExchangeResponse {
   base: Currencies.CAD;
   date: string;
