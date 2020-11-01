@@ -7,6 +7,7 @@ import React, {
 import { FiCheck, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 
+import InputAmount from "../../components/InputAmount";
 import LoadingPage from "../../components/LoadingPage";
 import { useAccounts } from "../../providers/accounts";
 import { Currencies, Account } from "../../types";
@@ -50,6 +51,10 @@ const TablesPage: FunctionComponent = () => {
     setFormData({ ...formData, currency: value });
   };
 
+  const handleChangeAmount = (value: string | number) => {
+    setFormData({ ...formData, amount: value });
+  };
+
   const handleChangeData = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -89,12 +94,10 @@ const TablesPage: FunctionComponent = () => {
         />
         <Label>Account Balance</Label>
         <InputWrapper>
-          <Input
-            onChange={handleChangeData}
+          <InputAmount
+            onChange={handleChangeAmount}
+            currency={formData.currency}
             value={formData.amount}
-            placeholder="10.00"
-            type="number"
-            name="amount"
           />
           <Select
             options={Object.values(Currencies)}

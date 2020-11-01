@@ -28,17 +28,17 @@ export interface LoginData {
 }
 
 export interface Account {
+  amount: number | string;
   currency: Currencies;
-  amount: number;
   email: string;
   name: string;
   _id?: string;
 }
 
 export interface Profile {
+  share?: string;
   email: string;
   name: string;
-  share?: string;
   _id?: string;
 }
 

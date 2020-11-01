@@ -17,6 +17,7 @@
     "next-auth": "^3.1.0",
     "polished": "^3.6.5",
     "react": "16.13.1",
+    "react-currency-format": "^1.0.0",
     "react-dom": "16.13.1",
     "react-icons": "^3.10.0",
     "styled-components": "^5.1.0",
