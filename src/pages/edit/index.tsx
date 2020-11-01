@@ -13,7 +13,6 @@ import Big from "big.js";
 import { humanizeBrl, humanizeCad } from "../../libs/format";
 import LoadingPage from "../../components/LoadingPage";
 import { useAccounts } from "../../providers/accounts";
-import { sortAccountByEmail } from "../../libs/utils";
 import NoAccounts from "../../components/NoAccounts";
 import { Currencies, Account } from "../../types";
 import Template from "../../components/Template";
@@ -80,7 +79,7 @@ const TablesPage: FunctionComponent = () => {
     if (accounts.length < 1) {
       return <NoAccounts />;
     }
-    return accounts.sort(sortAccountByEmail).map((account: Account) => {
+    return accounts.map((account: Account) => {
       const { _id, name, amount, currency, email } = account;
       const isExternalAccount = email !== session?.user?.email;
       const humanizedAmount = () => {

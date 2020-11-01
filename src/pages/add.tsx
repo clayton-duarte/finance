@@ -18,12 +18,7 @@ import Select from "../components/Select";
 import Input from "../components/Input";
 import Title from "../components/Title";
 import Label from "../components/Label";
-
-const FormWrapper = styled.div`
-  color: ${(props) => props.theme.palette.PRIMARY};
-  display: grid;
-  gap: 1rem;
-`;
+import Grid from "../components/Grid";
 
 const InputWrapper = styled.div`
   grid-template-columns: 1fr auto;
@@ -85,7 +80,7 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>add new account</Title>
-      <FormWrapper>
+      <Grid gap="1rem">
         <Label>Account Name</Label>
         <Input
           placeholder="Bank Savings"
@@ -93,6 +88,8 @@ const TablesPage: FunctionComponent = () => {
           value={formData.name}
           name="name"
         />
+      </Grid>
+      <Grid gap="1rem">
         <Label>Account Balance</Label>
         <InputWrapper>
           <InputAmount
@@ -106,7 +103,7 @@ const TablesPage: FunctionComponent = () => {
             onChange={handleChangeCurrency}
           />
         </InputWrapper>
-      </FormWrapper>
+      </Grid>
     </Template>
   );
 };

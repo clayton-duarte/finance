@@ -7,6 +7,7 @@ import { styled } from "../providers/theme";
 
 const StyledHeader = styled.header`
   background: ${(props) => props.theme.palette.PRIMARY};
+  box-shadow: ${(props) => props.theme.shape.shadow};
   color: ${(props) => props.theme.palette.BG};
   position: sticky;
   font-size: 2rem;
@@ -45,7 +46,10 @@ const Header: FunctionComponent = () => {
         {router?.route !== "/profile" ? (
           <FiUser role="button" onClick={() => router.push("/profile")} />
         ) : (
-          <FiLogOut role="button" onClick={signOut} />
+          <FiLogOut
+            role="button"
+            onClick={() => signOut({ callbackUrl: "/" })}
+          />
         )}
       </StyledTemplate>
     </StyledHeader>

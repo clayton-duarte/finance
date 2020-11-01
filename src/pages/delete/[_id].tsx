@@ -64,8 +64,8 @@ const TablesPage: FunctionComponent = () => {
         />,
       ]}
     >
+      <Title>Delete account</Title>
       <StyledForm>
-        <Title>Delete account</Title>
         <StyledText>You are about to delete the account:</StyledText>
         <AccountName>{selectedAccount.name}</AccountName>
         <StyledText>Are you sure?</StyledText>

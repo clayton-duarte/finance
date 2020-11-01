@@ -8,10 +8,12 @@ import LoadingPage from "../components/LoadingPage";
 import ResumeTable from "../components/ResumeTable";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
+import NoAccounts from "../components/NoAccounts";
 import { useRates } from "../providers/rates";
 import Template from "../components/Template";
 import SubTitle from "../components/SubTitle";
 import BigTotal from "../components/BigTotal";
+
 import { Currencies } from "../types";
 import Grid from "../components/Grid";
 
@@ -28,6 +30,44 @@ const TablesPage: FunctionComponent = () => {
   useEffect(() => {
     getRates();
   }, [rates]);
+
+  const renderContent = () => {
+    if (accounts.length < 1) {
+      return (
+        <Grid area="title" gap="1rem">
+          <NoAccounts />
+        </Grid>
+      );
+    }
+
+    return (
+      <>
+        <Grid area="title">
+          <BigTotal />
+        </Grid>
+
+        <Grid gap="1rem">
+          <SubTitle>
+            <span>Canada</span>
+            <span>
+              {rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}
+            </span>
+            <span>Brazil</span>
+          </SubTitle>
+          <BalanceGraph />
+        </Grid>
+
+        <Grid gap="1rem">
+          <SubTitle>
+            <span>Accounts</span>
+            <span />
+            <span>Balances</span>
+          </SubTitle>
+          <ResumeTable />
+        </Grid>
+      </>
+    );
+  };
 
   if (!accounts || !rates) return <LoadingPage />;
 
@@ -62,29 +102,7 @@ const TablesPage: FunctionComponent = () => {
         />,
       ]}
     >
-      <Grid area="title">
-        <BigTotal />
-      </Grid>
-
-      <Grid gap="1rem">
-        <SubTitle>
-          <span>Canada</span>
-          <span>
-            {rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}
-          </span>
-          <span>Brazil</span>
-        </SubTitle>
-        <BalanceGraph />
-      </Grid>
-
-      <Grid gap="1rem">
-        <SubTitle>
-          <span>Accounts</span>
-          <span />
-          <span>Balances</span>
-        </SubTitle>
-        <ResumeTable />
-      </Grid>
+      {renderContent()}
     </Template>
   );
 };

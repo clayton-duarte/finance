@@ -71,13 +71,13 @@ const MyThemeProvider: FunctionComponent = ({ children }) => {
       PRIMARY: "#157241",
       SECONDARY: "#75b855",
       TEXT: "#3c4146",
-      BG: "#f9f6f4",
+      BG: "#fefefe",
     },
     [Currencies.CAD]: {
       PRIMARY: "#ad3838",
       SECONDARY: "#db6161",
       TEXT: "#3c4146",
-      BG: "#f9f6f4",
+      BG: "#fefefe",
     },
   };
 

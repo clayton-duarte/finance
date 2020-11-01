@@ -18,14 +18,13 @@ const useAccounts = () => {
   const { accounts, setAccounts } = useContext(AccountsContext);
   const { axios, errorHandler } = useAxios();
 
-  const getAccounts = async (force = false) => {
-    if (!accounts || force)
-      try {
-        const { data } = await axios.get<Account[]>("/accounts");
-        setAccounts(data);
-      } catch (err) {
-        errorHandler<Account[]>(err);
-      }
+  const getAccounts = async () => {
+    try {
+      const { data } = await axios.get<Account[]>("/accounts");
+      setAccounts(data);
+    } catch (err) {
+      errorHandler<Account[]>(err);
+    }
   };
 
   const postAccount = async (newAccount: Partial<Account>) => {
@@ -33,7 +32,7 @@ const useAccounts = () => {
       await axios.post<Account[]>("/accounts", {
         account: newAccount,
       });
-      getAccounts(true);
+      getAccounts();
     } catch (err) {
       errorHandler<Account[]>(err);
     }
@@ -46,7 +45,7 @@ const useAccounts = () => {
           _id: accountId,
         },
       });
-      getAccounts(true);
+      getAccounts();
     } catch (err) {
       errorHandler<Account[]>(err);
     }
@@ -55,7 +54,7 @@ const useAccounts = () => {
   const updateAccount = async (updatedAccount: Account) => {
     try {
       await axios.put<Account>("/accounts", { account: updatedAccount });
-      getAccounts(true);
+      getAccounts();
     } catch (err) {
       errorHandler<Account>(err);
     }

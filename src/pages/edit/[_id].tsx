@@ -17,6 +17,7 @@ import Select from "../../components/Select";
 import Input from "../../components/Input";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
+import Grid from "../../components/Grid";
 
 const FormWrapper = styled.div`
   color: ${(props) => props.theme.palette.PRIMARY};
@@ -78,7 +79,7 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>edit account</Title>
-      <FormWrapper>
+      <Grid gap="1rem">
         <Label>Account Name</Label>
         <Input
           placeholder="Some bank name"
@@ -86,6 +87,8 @@ const TablesPage: FunctionComponent = () => {
           value={formData.name}
           name="name"
         />
+      </Grid>
+      <Grid gap="1rem">
         <Label>Account Balance</Label>
         <InputWrapper>
           <InputAmount
@@ -99,7 +102,7 @@ const TablesPage: FunctionComponent = () => {
             onChange={handleChangeCurrency}
           />
         </InputWrapper>
-      </FormWrapper>
+      </Grid>
     </Template>
   );
 };

@@ -9,6 +9,7 @@ export default styled.h1`
   padding: 0 0 0.5rem 0;
   align-items: center;
   font-size: 1.2rem;
+  grid-area: title;
   display: grid;
   margin: 0;
   gap: 1rem;

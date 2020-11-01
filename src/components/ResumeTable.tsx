@@ -4,14 +4,12 @@ import { FiLink } from "react-icons/fi";
 import Link from "next/link";
 
 import { humanizeBrl, humanizeCad } from "../libs/format";
-import { sortAccountByAmount } from "../libs/utils";
 import { useAccounts } from "../providers/accounts";
 import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import Table from "../components/Table";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
-import NoAccounts from "./NoAccounts";
 
 const ResumeTable: FunctionComponent = () => {
   const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
@@ -22,11 +20,9 @@ const ResumeTable: FunctionComponent = () => {
 
   if (!accounts || !rates || loading) return null;
 
-  if (accounts.length < 1) return <NoAccounts />;
-
   const renderAccounts = () => {
-    return accounts.sort(sortAccountByAmount).map((account) => {
-      const isExternalAccount = account.email !== session.user.email;
+    return accounts.map((account) => {
+      const isExternalAccount = account.email !== session?.user?.email;
       return (
         <tr key={account.name}>
           <td className="title">

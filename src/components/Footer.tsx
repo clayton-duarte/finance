@@ -4,6 +4,7 @@ import { styled } from "../providers/theme";
 
 const StyledFooter = styled.footer`
   background: ${(props) => props.theme.palette.PRIMARY};
+  box-shadow: ${(props) => props.theme.shape.shadow};
   color: ${(props) => props.theme.palette.BG};
   position: sticky;
   font-size: 2rem;
