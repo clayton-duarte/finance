@@ -93,8 +93,8 @@ const TablesPage: FunctionComponent = () => {
       const isExternalAccount = email !== session?.user?.email;
       const humanizedAmount = () => {
         return currency === Currencies.CAD
-          ? humanizeCad(Big(amount))
-          : humanizeBrl(Big(amount));
+          ? humanizeCad(Big(Number(amount)))
+          : humanizeBrl(Big(Number(amount)));
       };
 
       return (

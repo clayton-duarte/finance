@@ -28,13 +28,15 @@ const useAccounts = () => {
   };
 
   const postAccount = async (newAccount: Partial<Account>) => {
-    try {
-      await axios.post<Account[]>("/accounts", {
-        account: newAccount,
-      });
-      getAccounts();
-    } catch (err) {
-      errorHandler<Account[]>(err);
+    if (newAccount.name && newAccount.name) {
+      try {
+        await axios.post<Account[]>("/accounts", {
+          account: newAccount,
+        });
+        getAccounts();
+      } catch (err) {
+        errorHandler<Account[]>(err);
+      }
     }
   };
 
@@ -52,11 +54,13 @@ const useAccounts = () => {
   };
 
   const updateAccount = async (updatedAccount: Account) => {
-    try {
-      await axios.put<Account>("/accounts", { account: updatedAccount });
-      getAccounts();
-    } catch (err) {
-      errorHandler<Account>(err);
+    if (updatedAccount.name && updatedAccount.name) {
+      try {
+        await axios.put<Account>("/accounts", { account: updatedAccount });
+        getAccounts();
+      } catch (err) {
+        errorHandler<Account>(err);
+      }
     }
   };
 

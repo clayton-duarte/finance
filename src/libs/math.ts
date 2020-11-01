@@ -7,14 +7,14 @@ export const useMath = (defaultAccounts: Account[], rates: RatesResponse) => {
   const { currency: currentCurrency } = useCurrency();
 
   const toCad = (account: Account): Big => {
-    return Big(account.amount).div(
-      account.currency === Currencies.BRL ? Big(rates.BRL) : Big(1)
+    return Big(Number(account.amount)).div(
+      account.currency === Currencies.BRL ? Big(Number(rates.BRL)) : Big(1)
     );
   };
 
   const toBrl = (account: Account): Big => {
-    return Big(account.amount).times(
-      account.currency === Currencies.CAD ? Big(rates.BRL) : Big(1)
+    return Big(Number(account.amount)).times(
+      account.currency === Currencies.CAD ? Big(Number(rates.BRL)) : Big(1)
     );
   };
 
