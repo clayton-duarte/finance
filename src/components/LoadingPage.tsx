@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   gap: 1rem;
 `;
 
-const IconWrapper = styled.i`
+const IconWrapper = styled.div`
   color: ${(props) => props.theme.palette.SECONDARY};
   font-size: 2rem;
   > svg {

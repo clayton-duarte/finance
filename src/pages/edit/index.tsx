@@ -126,12 +126,14 @@ const TablesPage: FunctionComponent = () => {
     <Template
       footerActions={[
         <FiArrowLeft
+          key="back"
           role="button"
           onClick={() => {
             router.push("/");
           }}
         />,
         <FiPlusSquare
+          key="add"
           role="button"
           onClick={() => {
             router.push("/add");

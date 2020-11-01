@@ -65,12 +65,14 @@ const TablesPage: FunctionComponent = () => {
     <Template
       footerActions={[
         <FiX
+          key="cancel"
           role="button"
           onClick={() => {
             router.push("/");
           }}
         />,
         <FiCheck
+          key="confirm"
           role="button"
           onClick={async () => {
             await postAccount(formData);

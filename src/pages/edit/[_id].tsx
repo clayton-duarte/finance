@@ -64,12 +64,14 @@ const TablesPage: FunctionComponent = () => {
     <Template
       footerActions={[
         <FiX
+          key="cancel"
           role="button"
           onClick={() => {
             router.push("/edit");
           }}
         />,
         <FiCheck
+          key="cancel"
           role="button"
           onClick={async () => {
             await updateAccount(formData);

@@ -27,7 +27,7 @@ const ResumeTable: FunctionComponent = () => {
     return accounts.sort(sortAccounts).map((account) => {
       const isExternalAccount = account.email !== session?.user?.email;
       return (
-        <tr key={account.name}>
+        <tr key={account._id}>
           <td className="title">
             {isExternalAccount && <FiLink />} {account.name}
           </td>

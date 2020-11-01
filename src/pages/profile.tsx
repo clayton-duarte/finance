@@ -52,8 +52,8 @@ const TablesPage: FunctionComponent = () => {
   return (
     <Template
       footerActions={[
-        <FiArrowLeft role="button" onClick={handleClickBack} />,
-        <FiCheck role="button" onClick={handleSubmit} />,
+        <FiArrowLeft key="back" role="button" onClick={handleClickBack} />,
+        <FiCheck key="submit" role="button" onClick={handleSubmit} />,
       ]}
     >
       <Title>Edit Profile</Title>

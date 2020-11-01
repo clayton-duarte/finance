@@ -75,6 +75,7 @@ const TablesPage: FunctionComponent = () => {
     <Template
       footerActions={[
         <FiGlobe
+          key="lang"
           role="button"
           onClick={() => {
             return currency === Currencies.CAD
@@ -83,18 +84,21 @@ const TablesPage: FunctionComponent = () => {
           }}
         />,
         <FiEdit
+          key="edit"
           role="button"
           onClick={() => {
             router.push("/edit");
           }}
         />,
         <FiPlusSquare
+          key="add"
           role="button"
           onClick={() => {
             router.push("/add");
           }}
         />,
         <FiRefreshCw
+          key="refresh"
           role="button"
           onClick={() => {
             router.reload();
