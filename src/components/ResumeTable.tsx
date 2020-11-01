@@ -13,12 +13,13 @@ import { useSort } from "../libs/sort";
 import { Currencies } from "../types";
 
 const ResumeTable: FunctionComponent = () => {
-  const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
   const [session, loading] = useSession();
   const { currency } = useCurrency();
   const { accounts } = useAccounts();
   const { rates } = useRates();
-  const { sortAccounts } = useSort(session?.user?.email);
+
+  const { toBrl, toCad, totalInCad, totalInBrl } = useMath(accounts, rates);
+  const { sortAccounts } = useSort(session?.user?.email, accounts, rates);
 
   if (!accounts || !rates || loading) return null;
 

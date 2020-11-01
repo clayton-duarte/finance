@@ -13,6 +13,7 @@ import Big from "big.js";
 import { humanizeBrl, humanizeCad } from "../../libs/format";
 import LoadingPage from "../../components/LoadingPage";
 import { useAccounts } from "../../providers/accounts";
+import { useRates } from "../../providers/rates";
 import NoAccounts from "../../components/NoAccounts";
 import { Currencies, Account } from "../../types";
 import Template from "../../components/Template";
@@ -58,14 +59,20 @@ const StyledSpan = styled.span`
 const TablesPage: FunctionComponent = () => {
   const { accounts, getAccounts } = useAccounts();
   const [session, loading] = useSession();
+  const { rates, getRates } = useRates();
   const router = useRouter();
-  const { sortAccounts } = useSort(session?.user?.email);
+
+  const { sortAccounts } = useSort(session?.user?.email, accounts, rates);
 
   useEffect(() => {
     getAccounts();
   }, []);
 
-  if (!accounts || loading) return <LoadingPage />;
+  useEffect(() => {
+    if (!rates) getRates();
+  }, [rates]);
+
+  if (!accounts || !rates || loading) return <LoadingPage />;
 
   const handleClickEdit = (_id: string) => (e: MouseEvent) => {
     router.push("/edit/[_id]", `/edit/${_id}`);

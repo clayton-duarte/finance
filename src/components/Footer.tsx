@@ -27,7 +27,7 @@ const Footer: FunctionComponent<{ actions: JSX.Element[] }> = ({
   return (
     <StyledFooter>
       <StyledTemplate actions={actions.length}>
-        <>{actions}</>
+        <>{actions.map((Action) => Action)}</>
       </StyledTemplate>
     </StyledFooter>
   );

@@ -27,10 +27,11 @@ const StyledText = styled.p`
 `;
 
 const BigTotal: FunctionComponent = () => {
-  const { totalInCad, totalInBrl } = useMath();
   const { accounts } = useAccounts();
   const { currency } = useCurrency();
   const { rates } = useRates();
+
+  const { totalInCad, totalInBrl } = useMath(accounts, rates);
 
   if (!accounts || !currency || !rates) return null;
 

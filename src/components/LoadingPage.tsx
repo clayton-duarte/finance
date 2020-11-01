@@ -25,8 +25,7 @@ const Text = styled.p`
   margin: 0;
 `;
 
-// TODO > all
-export default () => {
+const LoadingPage = () => {
   const loadingPhrases = [
     "the best pancake ever",
     "almost there",
@@ -47,3 +46,5 @@ export default () => {
     </Wrapper>
   );
 };
+
+export default LoadingPage;

@@ -1,25 +1,17 @@
-import { Account } from "../types";
+import { Account, RatesResponse } from "../types";
 import { useMath } from "./math";
 
-export const useSort = (userEmail: string) => {
-  const { toCad } = useMath();
+export const useSort = (
+  userEmail: string,
+  accounts: Account[],
+  rates: RatesResponse
+) => {
+  const { toCad } = useMath(accounts, rates);
 
   const sortAccounts = (a: Account, b: Account) => {
     const toSameCurrency = (account: Account) => {
       return Number(toCad(account));
     };
-    // if (toSameCurrency(a) > toSameCurrency(b)) {
-    //   if (a.email === userEmail) {
-    //     return -1;
-    //   }
-    //   return 0;
-    // }
-    // if (toSameCurrency(a) < toSameCurrency(b)) {
-    //   if (a.email === userEmail) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // }
     if (a.email === userEmail) {
       return toSameCurrency(b) - toSameCurrency(a);
     }

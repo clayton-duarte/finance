@@ -29,10 +29,11 @@ const PercentBar = styled.section<{ percent: Big }>`
 const BalanceText = styled.span``;
 
 const BalanceGraph: FunctionComponent = () => {
-  const { totalByCurrency } = useMath();
   const { accounts } = useAccounts();
   const { currency } = useCurrency();
   const { rates } = useRates();
+
+  const { totalByCurrency } = useMath(accounts, rates);
 
   if (!accounts || !currency || !rates) return null;
 
