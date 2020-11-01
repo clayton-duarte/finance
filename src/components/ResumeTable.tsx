@@ -18,10 +18,7 @@ const ResumeTable: FunctionComponent = () => {
   const { currency } = useCurrency();
   const { accounts } = useAccounts();
   const { rates } = useRates();
-  const { sortAccounts } = useSort({
-    userEmail: session?.user?.email,
-    rates: rates,
-  });
+  const { sortAccounts } = useSort(session?.user?.email);
 
   if (!accounts || !rates || loading) return null;
 
@@ -58,7 +55,6 @@ const ResumeTable: FunctionComponent = () => {
       </tr>
     );
   };
-  console.log("render");
 
   return (
     <Link href="/edit">

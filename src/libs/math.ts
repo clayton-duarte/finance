@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Big from "big.js";
 
 import { useCurrency } from "../providers/currency";
@@ -6,9 +7,14 @@ import { Account, Currencies } from "../types";
 import { useRates } from "../providers/rates";
 
 export const useMath = () => {
-  const { accounts: defaultAccounts } = useAccounts();
+  const { accounts: defaultAccounts, getAccounts } = useAccounts();
   const { currency: currentCurrency } = useCurrency();
-  const { rates } = useRates();
+  const { rates, getRates } = useRates();
+
+  useEffect(() => {
+    if (!defaultAccounts) getAccounts();
+    if (!rates) getRates();
+  }, []);
 
   const toCad = (account: Account): Big => {
     return Big(account.amount).div(

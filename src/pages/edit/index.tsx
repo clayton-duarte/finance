@@ -19,6 +19,7 @@ import Template from "../../components/Template";
 import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
+import { useSort } from "../../libs/sort";
 import Grid from "../../components/Grid";
 
 const Card = styled.section<{ disabled: boolean }>`
@@ -58,6 +59,7 @@ const TablesPage: FunctionComponent = () => {
   const { accounts, getAccounts } = useAccounts();
   const [session, loading] = useSession();
   const router = useRouter();
+  const { sortAccounts } = useSort(session?.user?.email);
 
   useEffect(() => {
     getAccounts();
@@ -79,7 +81,7 @@ const TablesPage: FunctionComponent = () => {
     if (accounts.length < 1) {
       return <NoAccounts />;
     }
-    return accounts.map((account: Account) => {
+    return accounts.sort(sortAccounts).map((account: Account) => {
       const { _id, name, amount, currency, email } = account;
       const isExternalAccount = email !== session?.user?.email;
       const humanizedAmount = () => {

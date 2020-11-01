@@ -1,26 +1,27 @@
-import { Account, RatesResponse } from "../types";
+import { Account } from "../types";
 import { useMath } from "./math";
 
-interface UseSortParams {
-  rates: RatesResponse;
-  userEmail: string;
-}
-
-export const useSort = ({ userEmail, rates }: UseSortParams) => {
+export const useSort = (userEmail: string) => {
   const { toCad } = useMath();
 
   const sortAccounts = (a: Account, b: Account) => {
-    const realAmount = (account: Account) => {
-      //   console.log(toCad(account).valueOf());
-
-      return toCad(account);
+    const toSameCurrency = (account: Account) => {
+      return Number(toCad(account));
     };
-
-    if (realAmount(a) > realAmount(b)) {
-      return -1;
-    }
-    if (realAmount(a) < realAmount(b)) {
-      return 1;
+    // if (toSameCurrency(a) > toSameCurrency(b)) {
+    //   if (a.email === userEmail) {
+    //     return -1;
+    //   }
+    //   return 0;
+    // }
+    // if (toSameCurrency(a) < toSameCurrency(b)) {
+    //   if (a.email === userEmail) {
+    //     return 1;
+    //   }
+    //   return 0;
+    // }
+    if (a.email === userEmail) {
+      return toSameCurrency(b) - toSameCurrency(a);
     }
     return 0;
   };
