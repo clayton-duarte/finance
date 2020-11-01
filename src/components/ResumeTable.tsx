@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, memo } from "react";
 import { useSession } from "next-auth/client";
 import { FiLink } from "react-icons/fi";
 import Link from "next/link";
@@ -9,6 +9,7 @@ import { useCurrency } from "../providers/currency";
 import { useRates } from "../providers/rates";
 import Table from "../components/Table";
 import { useMath } from "../libs/math";
+import { useSort } from "../libs/sort";
 import { Currencies } from "../types";
 
 const ResumeTable: FunctionComponent = () => {
@@ -17,11 +18,15 @@ const ResumeTable: FunctionComponent = () => {
   const { currency } = useCurrency();
   const { accounts } = useAccounts();
   const { rates } = useRates();
+  const { sortAccounts } = useSort({
+    userEmail: session?.user?.email,
+    rates: rates,
+  });
 
   if (!accounts || !rates || loading) return null;
 
   const renderAccounts = () => {
-    return accounts.map((account) => {
+    return accounts.sort(sortAccounts).map((account) => {
       const isExternalAccount = account.email !== session?.user?.email;
       return (
         <tr key={account.name}>
@@ -53,6 +58,7 @@ const ResumeTable: FunctionComponent = () => {
       </tr>
     );
   };
+  console.log("render");
 
   return (
     <Link href="/edit">
@@ -64,4 +70,4 @@ const ResumeTable: FunctionComponent = () => {
   );
 };
 
-export default ResumeTable;
+export default memo(ResumeTable);

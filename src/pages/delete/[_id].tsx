@@ -31,7 +31,7 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getAccounts();
-  }, [accounts]);
+  }, []);
 
   useEffect(() => {
     getRates();

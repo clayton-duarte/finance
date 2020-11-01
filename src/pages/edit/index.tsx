@@ -61,7 +61,7 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getAccounts();
-  }, [accounts]);
+  }, []);
 
   if (!accounts || loading) return <LoadingPage />;
 
