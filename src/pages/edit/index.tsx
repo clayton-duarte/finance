@@ -1,11 +1,21 @@
 import React, { FunctionComponent, useEffect, MouseEvent } from "react";
-import { FiArrowLeft, FiTrash2, FiEdit, FiPlusSquare } from "react-icons/fi";
+import {
+  FiPlusSquare,
+  FiArrowLeft,
+  FiTrash2,
+  FiEdit,
+  FiLink,
+} from "react-icons/fi";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import Big from "big.js";
 
+import { humanizeBrl, humanizeCad } from "../../libs/format";
 import LoadingPage from "../../components/LoadingPage";
 import { useAccounts } from "../../providers/accounts";
 import { sortAccountByEmail } from "../../libs/utils";
+import NoAccounts from "../../components/NoAccounts";
+import { Currencies, Account } from "../../types";
 import Template from "../../components/Template";
 import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
@@ -66,53 +76,63 @@ const TablesPage: FunctionComponent = () => {
     e.stopPropagation();
   };
 
+  const renderAccounts = () => {
+    if (accounts.length < 1) {
+      return <NoAccounts />;
+    }
+    return accounts.sort(sortAccountByEmail).map((account: Account) => {
+      const { _id, name, amount, currency, email } = account;
+      const isExternalAccount = email !== session?.user?.email;
+      const humanizedAmount = () => {
+        return currency === Currencies.CAD
+          ? humanizeCad(Big(amount))
+          : humanizeBrl(Big(amount));
+      };
+
+      return (
+        <Card
+          disabled={isExternalAccount}
+          onClick={handleClickEdit(_id)}
+          key={_id}
+        >
+          {!isExternalAccount ? (
+            <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
+          ) : (
+            <FiLink />
+          )}
+          <Grid>
+            <Label>
+              {name} {isExternalAccount && <StyledSpan>({email})</StyledSpan>}
+            </Label>
+            <StyledText>{humanizedAmount()}</StyledText>
+          </Grid>
+          {!isExternalAccount && (
+            <FiEdit role="button" onClick={handleClickEdit(_id)} />
+          )}
+        </Card>
+      );
+    });
+  };
+
   return (
     <Template
-      footerChildren={
-        <>
-          <FiArrowLeft
-            role="button"
-            onClick={() => {
-              router.push("/");
-            }}
-          />
-          <span />
-          <FiPlusSquare
-            role="button"
-            onClick={() => {
-              router.push("/add");
-            }}
-          />
-        </>
-      }
+      footerActions={[
+        <FiArrowLeft
+          role="button"
+          onClick={() => {
+            router.push("/");
+          }}
+        />,
+        <FiPlusSquare
+          role="button"
+          onClick={() => {
+            router.push("/add");
+          }}
+        />,
+      ]}
     >
       <Title>Edit accounts</Title>
-      {accounts.sort(sortAccountByEmail).map((account) => {
-        const { _id, name, amount, currency, email } = account;
-        const isExternalAccount = email !== session?.user?.email;
-        return (
-          <Card
-            disabled={isExternalAccount}
-            onClick={handleClickEdit(_id)}
-            key={_id}
-          >
-            {!isExternalAccount && (
-              <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
-            )}
-            <Grid>
-              <Label>
-                {name} {isExternalAccount && <StyledSpan>({email})</StyledSpan>}
-              </Label>
-              <StyledText>
-                {amount} {currency}
-              </StyledText>
-            </Grid>
-            {!isExternalAccount && (
-              <FiEdit role="button" onClick={handleClickEdit(_id)} />
-            )}
-          </Card>
-        );
-      })}
+      {renderAccounts()}
     </Template>
   );
 };

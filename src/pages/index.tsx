@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { FiEdit, FiRefreshCw, FiGlobe } from "react-icons/fi";
+import { FiEdit, FiRefreshCw, FiGlobe, FiPlusSquare } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 import { humanizeBrl, humanizeCad } from "../libs/format";
@@ -33,30 +33,34 @@ const TablesPage: FunctionComponent = () => {
 
   return (
     <Template
-      footerChildren={
-        <>
-          <FiGlobe
-            role="button"
-            onClick={() => {
-              return currency === Currencies.CAD
-                ? setCurrency(Currencies.BRL)
-                : setCurrency(Currencies.CAD);
-            }}
-          />
-          <FiEdit
-            role="button"
-            onClick={() => {
-              router.push("/edit");
-            }}
-          />
-          <FiRefreshCw
-            role="button"
-            onClick={() => {
-              router.reload();
-            }}
-          />
-        </>
-      }
+      footerActions={[
+        <FiGlobe
+          role="button"
+          onClick={() => {
+            return currency === Currencies.CAD
+              ? setCurrency(Currencies.BRL)
+              : setCurrency(Currencies.CAD);
+          }}
+        />,
+        <FiEdit
+          role="button"
+          onClick={() => {
+            router.push("/edit");
+          }}
+        />,
+        <FiPlusSquare
+          role="button"
+          onClick={() => {
+            router.push("/add");
+          }}
+        />,
+        <FiRefreshCw
+          role="button"
+          onClick={() => {
+            router.reload();
+          }}
+        />,
+      ]}
     >
       <Grid area="title">
         <BigTotal />

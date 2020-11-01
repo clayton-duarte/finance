@@ -4,14 +4,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { signOut, useSession } from "next-auth/client";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 import LoadingPage from "../components/LoadingPage";
 import { useProfile } from "../providers/profile";
 import Template from "../components/Template";
-import Button from "../components/Button";
 import Input from "../components/Input";
 import Title from "../components/Title";
 import Label from "../components/Label";
@@ -34,7 +33,7 @@ const TablesPage: FunctionComponent = () => {
     }
   }, [profile]);
 
-  if (loading) return <LoadingPage />;
+  if (loading || !session) return <LoadingPage />;
 
   const handleSubmit = () => {
     updateProfile(formData);
@@ -52,13 +51,10 @@ const TablesPage: FunctionComponent = () => {
 
   return (
     <Template
-      footerChildren={
-        <>
-          <FiArrowLeft role="button" onClick={handleClickBack} />
-          <span />
-          <FiCheck role="button" onClick={handleSubmit} />
-        </>
-      }
+      footerActions={[
+        <FiArrowLeft role="button" onClick={handleClickBack} />,
+        <FiCheck role="button" onClick={handleSubmit} />,
+      ]}
     >
       <Title>Edit Profile</Title>
       <Grid>
@@ -90,7 +86,6 @@ const TablesPage: FunctionComponent = () => {
           type="email"
         />
       </Grid>
-      <Button onClick={signOut}>logout</Button>
     </Template>
   );
 };

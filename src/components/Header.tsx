@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { useSession } from "next-auth/client";
-import { FiHome, FiUser } from "react-icons/fi";
+import { useSession, signOut } from "next-auth/client";
+import { FiHome, FiUser, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 import { styled } from "../providers/theme";
@@ -30,27 +30,25 @@ const UserName = styled.span`
 `;
 
 const Header: FunctionComponent = () => {
-  const [session] = useSession();
+  const [session, loading] = useSession();
   const router = useRouter();
 
-  const handleClickHome = () => {
-    router.push("/");
-  };
+  if (loading) return null;
 
-  const handleClickProfile = () => {
-    router.push("/profile");
-  };
+  const [firstName] = session.user?.name?.split(" ");
 
   return (
-    <>
-      <StyledHeader>
-        <StyledTemplate>
-          <FiHome role="button" onClick={handleClickHome} />
-          <UserName>Hello {session?.user?.name}</UserName>
-          <FiUser role="button" onClick={handleClickProfile} />
-        </StyledTemplate>
-      </StyledHeader>
-    </>
+    <StyledHeader>
+      <StyledTemplate>
+        <FiHome role="button" onClick={() => router.push("/")} />
+        <UserName>Hello {firstName}</UserName>
+        {router?.route !== "/profile" ? (
+          <FiUser role="button" onClick={() => router.push("/profile")} />
+        ) : (
+          <FiLogOut role="button" onClick={signOut} />
+        )}
+      </StyledTemplate>
+    </StyledHeader>
   );
 };
 

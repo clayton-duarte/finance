@@ -48,24 +48,21 @@ const TablesPage: FunctionComponent = () => {
 
   return (
     <Template
-      footerChildren={
-        <>
-          <FiX
-            role="button"
-            onClick={() => {
-              router.push("/");
-            }}
-          />
-          <span />
-          <FiCheck
-            role="button"
-            onClick={async () => {
-              await deleteAccount(accountId);
-              router.push("/edit");
-            }}
-          />
-        </>
-      }
+      footerActions={[
+        <FiX
+          role="button"
+          onClick={() => {
+            router.push("/");
+          }}
+        />,
+        <FiCheck
+          role="button"
+          onClick={async () => {
+            await deleteAccount(accountId);
+            router.push("/edit");
+          }}
+        />,
+      ]}
     >
       <StyledForm>
         <Title>Delete account</Title>

@@ -11,6 +11,7 @@ import { useRates } from "../providers/rates";
 import Table from "../components/Table";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
+import NoAccounts from "./NoAccounts";
 
 const ResumeTable: FunctionComponent = () => {
   const { toBrl, toCad, totalInCad, totalInBrl } = useMath();
@@ -20,6 +21,8 @@ const ResumeTable: FunctionComponent = () => {
   const { rates } = useRates();
 
   if (!accounts || !rates || loading) return null;
+
+  if (accounts.length < 1) return <NoAccounts />;
 
   const renderAccounts = () => {
     return accounts.sort(sortAccountByAmount).map((account) => {

@@ -44,13 +44,13 @@ const Content = styled.article`
 `;
 
 const Template: FunctionComponent<{
-  footerChildren?: JSX.Element;
-}> = ({ children, footerChildren }) => {
+  footerActions?: JSX.Element[];
+}> = ({ children, footerActions = [] }) => {
   return (
     <Wrapper>
       <Header />
       <Content>{children}</Content>
-      <Footer>{footerChildren}</Footer>
+      <Footer actions={footerActions} />
     </Wrapper>
   );
 };

@@ -61,24 +61,21 @@ const TablesPage: FunctionComponent = () => {
 
   return (
     <Template
-      footerChildren={
-        <>
-          <FiX
-            role="button"
-            onClick={() => {
-              router.push("/edit");
-            }}
-          />
-          <span />
-          <FiCheck
-            role="button"
-            onClick={async () => {
-              await updateAccount(formData);
-              router.push("/");
-            }}
-          />
-        </>
-      }
+      footerActions={[
+        <FiX
+          role="button"
+          onClick={() => {
+            router.push("/edit");
+          }}
+        />,
+        <FiCheck
+          role="button"
+          onClick={async () => {
+            await updateAccount(formData);
+            router.push("/");
+          }}
+        />,
+      ]}
     >
       <Title>edit account</Title>
       <FormWrapper>
