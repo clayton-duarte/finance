@@ -7,6 +7,7 @@ import React, {
 import { FiCheck, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 
+import InputAmount from "../components/InputAmount";
 import LoadingPage from "../components/LoadingPage";
 import { useAccounts } from "../providers/accounts";
 import { Currencies, Account } from "../types";
@@ -33,7 +34,7 @@ const InputWrapper = styled.div`
 const initialData: Account = {
   currency: Currencies.CAD,
   email: undefined,
-  amount: null,
+  amount: "",
   name: "",
 };
 
@@ -57,11 +58,12 @@ const TablesPage: FunctionComponent = () => {
     setFormData({ ...formData, currency: value });
   };
 
-  const handleChangeData = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChangeAmount = (value: string | number) => {
+    setFormData({ ...formData, amount: value });
+  };
+
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, name: e.target.value });
   };
 
   return (
@@ -89,19 +91,17 @@ const TablesPage: FunctionComponent = () => {
       <FormWrapper>
         <Label>Account Name</Label>
         <Input
-          placeholder="Some bank name"
-          onChange={handleChangeData}
+          placeholder="Bank Savings"
+          onChange={handleChangeName}
           value={formData.name}
           name="name"
         />
         <Label>Account Balance</Label>
         <InputWrapper>
-          <Input
-            onChange={handleChangeData}
+          <InputAmount
+            onChange={handleChangeAmount}
+            currency={formData.currency}
             value={formData.amount}
-            placeholder="10.00"
-            type="number"
-            name="amount"
           />
           <Select
             options={Object.values(Currencies)}

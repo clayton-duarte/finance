@@ -55,11 +55,8 @@ const TablesPage: FunctionComponent = () => {
     setFormData({ ...formData, amount: value });
   };
 
-  const handleChangeData = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, name: e.target.value });
   };
 
   return (
@@ -88,7 +85,7 @@ const TablesPage: FunctionComponent = () => {
         <Label>Account Name</Label>
         <Input
           placeholder="Some bank name"
-          onChange={handleChangeData}
+          onChange={handleChangeName}
           value={formData.name}
           name="name"
         />
