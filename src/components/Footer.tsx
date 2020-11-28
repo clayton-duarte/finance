@@ -9,6 +9,7 @@ const StyledFooter = styled.footer`
   position: sticky;
   font-size: 2rem;
   display: grid;
+  bottom: 0;
 `;
 
 const StyledTemplate = styled.section<{ actions: number }>`

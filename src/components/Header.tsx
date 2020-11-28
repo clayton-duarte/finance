@@ -12,6 +12,7 @@ const StyledHeader = styled.header`
   position: sticky;
   font-size: 2rem;
   display: grid;
+  top: 0;
 `;
 
 const StyledTemplate = styled.section`
