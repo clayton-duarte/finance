@@ -22,15 +22,18 @@ const StyledTemplate = styled.section<{ actions: number }>`
   width: 100%;
 `;
 
-const Footer: FunctionComponent<{ actions: JSX.Element[] }> = ({
-  actions = [],
-}) => {
-  return (
-    <StyledFooter>
-      <StyledTemplate actions={actions.length}>
-        <>{actions}</>
-      </StyledTemplate>
-    </StyledFooter>
-  );
+const Footer: FunctionComponent<{ actions: JSX.Element[] }> = ({ actions }) => {
+  if (actions) {
+    return (
+      <StyledFooter>
+        <StyledTemplate actions={actions.length}>
+          <>{actions}</>
+        </StyledTemplate>
+      </StyledFooter>
+    );
+  }
+
+  return null;
 };
+
 export default Footer;

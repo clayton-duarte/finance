@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useSession, signOut } from "next-auth/client";
-import { FiHome, FiUser, FiLogOut } from "react-icons/fi";
+import { FiHome, FiUser, FiLogOut, FiLogIn } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 import { styled } from "../providers/theme";
@@ -37,21 +37,43 @@ const Header: FunctionComponent = () => {
 
   if (loading) return null;
 
-  const [firstName] = session.user?.name?.split(" ");
+  const getWelcome = () => {
+    const name = session?.user?.name;
+    if (name) {
+      const [firstName] = name.split(" ");
+      return `Hello ${firstName}`;
+    }
+    return "Please Sign-in";
+  };
+
+  const renderLeftButton = () => {
+    if (session) {
+      return <FiHome onClick={() => router.push("/")} role="button" />;
+    }
+    return <span />;
+  };
+
+  const renderRightButton = () => {
+    if (router?.route?.includes("profile")) {
+      if (session) {
+        return (
+          <FiLogOut
+            onClick={() => signOut({ callbackUrl: "/" })}
+            role="button"
+          />
+        );
+      }
+      return null;
+    }
+    return <FiUser onClick={() => router.push("/profile")} role="button" />;
+  };
 
   return (
     <StyledHeader>
       <StyledTemplate>
-        <FiHome role="button" onClick={() => router.push("/")} />
-        <UserName>Hello {firstName}</UserName>
-        {router?.route !== "/profile" ? (
-          <FiUser role="button" onClick={() => router.push("/profile")} />
-        ) : (
-          <FiLogOut
-            role="button"
-            onClick={() => signOut({ callbackUrl: "/" })}
-          />
-        )}
+        {renderLeftButton()}
+        <UserName>{getWelcome()}</UserName>
+        {renderRightButton()}
       </StyledTemplate>
     </StyledHeader>
   );

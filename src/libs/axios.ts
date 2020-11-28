@@ -1,7 +1,9 @@
 import Axios, { AxiosRequestConfig, AxiosError } from "axios";
-import { signIn } from "next-auth/client";
+import { useRouter } from "next/router";
 
 const useAxios = (token?: string) => {
+  const router = useRouter();
+
   function createAxiosConfig(): AxiosRequestConfig {
     const baseURL = `/api`;
     if (token) {
@@ -15,7 +17,8 @@ const useAxios = (token?: string) => {
   function errorHandler<T = any>(err: AxiosError<T>) {
     switch (err.response.status) {
       case 401:
-        return signIn("google");
+        // return signIn("google");
+        return router.push("/profile");
       case 400:
       case 403:
       case 404:

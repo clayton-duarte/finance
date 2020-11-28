@@ -28,7 +28,11 @@ const PercentBar = styled.section<{ percent: Big }>`
   display: grid;
 `;
 
-const BalanceText = styled.span``;
+const Text = styled.span``;
+
+const SmallText = styled.span`
+  font-size: 1rem;
+`;
 
 const BalanceGraph: FunctionComponent = () => {
   const { accounts } = useAccounts();
@@ -55,13 +59,15 @@ const BalanceGraph: FunctionComponent = () => {
   return (
     <Card>
       <SubTitle>
-        <span>Canada</span>
-        <span>{rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}</span>
-        <span>Brazil</span>
+        <Text>Canada</Text>
+        <SmallText>
+          {rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}
+        </SmallText>
+        <Text>Brazil</Text>
       </SubTitle>
       <PercentBar percent={percent}>
-        <BalanceText>{humanizedTotal(cadTotal)}</BalanceText>
-        <BalanceText>{humanizedTotal(brlTotal)}</BalanceText>
+        <Text>{humanizedTotal(cadTotal)}</Text>
+        <Text>{humanizedTotal(brlTotal)}</Text>
       </PercentBar>
     </Card>
   );

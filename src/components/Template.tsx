@@ -26,7 +26,7 @@ const Wrapper = styled.main`
 
 const Content = styled.article`
   grid-template-columns: 1fr;
-  align-content: start;
+  align-content: center;
   max-width: 1024px;
   padding: 0 1rem;
   margin: 0 auto;

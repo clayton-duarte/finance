@@ -3,7 +3,6 @@ import { rgba } from "polished";
 
 export default styled.table`
   border-radius: ${(props) => props.theme.shape.radius};
-  box-shadow: ${(props) => props.theme.shape.shadow};
   background: ${(props) => props.theme.palette.BG};
   border-collapse: collapse;
   overflow: hidden;

@@ -11,6 +11,8 @@ import Table from "../components/Table";
 import { useMath } from "../libs/math";
 import { useSort } from "../libs/sort";
 import { Currencies } from "../types";
+import SubTitle from "./SubTitle";
+import Card from "./Card";
 
 const ResumeTable: FunctionComponent = () => {
   const [session, loading] = useSession();
@@ -59,10 +61,17 @@ const ResumeTable: FunctionComponent = () => {
 
   return (
     <Link href="/edit">
-      <Table>
-        <thead>{renderTotal()}</thead>
-        <tbody>{renderAccounts()}</tbody>
-      </Table>
+      <Card>
+        <SubTitle>
+          <span>Accounts</span>
+          <span />
+          <span>Balances</span>
+        </SubTitle>
+        <Table>
+          <thead>{renderTotal()}</thead>
+          <tbody>{renderAccounts()}</tbody>
+        </Table>
+      </Card>
     </Link>
   );
 };

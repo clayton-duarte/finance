@@ -9,6 +9,11 @@ const options = {
       clientId: process.env.GOOGLE_CLIENT_ID,
     }),
   ],
+  callbacks: {
+    redirect: async (url, baseUrl) => {
+      return Promise.resolve(baseUrl);
+    },
+  },
 };
 
 export default (req, res) => NextAuth(req, res, options);
