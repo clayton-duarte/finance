@@ -25,9 +25,7 @@ const Wrapper = styled.main`
 `;
 
 const Content = styled.article`
-  grid-template-areas:
-    "title"
-    "rest";
+  grid-template-columns: 1fr;
   align-content: start;
   max-width: 1024px;
   padding: 0 1rem;
@@ -37,9 +35,6 @@ const Content = styled.article`
   gap: 1rem;
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "title title"
-      "rest rest";
   }
 `;
 

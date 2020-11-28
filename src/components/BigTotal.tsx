@@ -7,15 +7,9 @@ import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
-
-const StyledTitle = styled.h3`
-  color: ${(props) => props.theme.palette.PRIMARY};
-  justify-content: space-around;
-  text-transform: uppercase;
-  font-size: 1.1rem;
-  display: grid;
-  margin: 0;
-`;
+import Title from "./Title";
+import Grid from "./Grid";
+import Card from "./Card";
 
 const StyledText = styled.p`
   color: ${(props) => props.theme.palette.PRIMARY};
@@ -42,13 +36,13 @@ const BigTotal: FunctionComponent = () => {
     return humanizeBrl(totalInBrl());
   };
 
-  const bigTotal = calcBigTotal();
-
   return (
-    <>
-      <StyledTitle>balance total</StyledTitle>
-      <StyledText>{bigTotal}</StyledText>
-    </>
+    <Card>
+      <Grid gap=".5rem">
+        <Title>balance total</Title>
+        <StyledText>{calcBigTotal()}</StyledText>
+      </Grid>
+    </Card>
   );
 };
 

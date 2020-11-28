@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Button from "./Button";
+import Card from "./Card";
 
 const Message = styled.p`
   text-align: center;
@@ -14,10 +15,10 @@ const NoAccounts = () => {
   const router = useRouter();
 
   return (
-    <>
+    <Card>
       <Message>You don't have any account yet</Message>
       <Button onClick={() => router.push("/add")}>Add an account</Button>
-    </>
+    </Card>
   );
 };
 

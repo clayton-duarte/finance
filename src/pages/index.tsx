@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { FiEdit, FiRefreshCw, FiGlobe, FiPlusSquare } from "react-icons/fi";
+import { FiEdit, FiGlobe, FiPlusSquare } from "react-icons/fi";
 import { useRouter } from "next/router";
 
-import { humanizeBrl, humanizeCad } from "../libs/format";
 import BalanceGraph from "../components/BalanceGraph";
 import LoadingPage from "../components/LoadingPage";
 import ResumeTable from "../components/ResumeTable";
@@ -11,11 +10,9 @@ import { useCurrency } from "../providers/currency";
 import NoAccounts from "../components/NoAccounts";
 import { useRates } from "../providers/rates";
 import Template from "../components/Template";
-import SubTitle from "../components/SubTitle";
 import BigTotal from "../components/BigTotal";
-
+import Title from "../components/Title";
 import { Currencies } from "../types";
-import Grid from "../components/Grid";
 
 const TablesPage: FunctionComponent = () => {
   const { accounts, getAccounts } = useAccounts();
@@ -33,38 +30,14 @@ const TablesPage: FunctionComponent = () => {
 
   const renderContent = () => {
     if (accounts.length < 1) {
-      return (
-        <Grid area="title" gap="1rem">
-          <NoAccounts />
-        </Grid>
-      );
+      return <NoAccounts />;
     }
 
     return (
       <>
-        <Grid area="title">
-          <BigTotal />
-        </Grid>
-
-        <Grid gap="1rem">
-          <SubTitle>
-            <span>Canada</span>
-            <span>
-              {rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}
-            </span>
-            <span>Brazil</span>
-          </SubTitle>
-          <BalanceGraph />
-        </Grid>
-
-        <Grid gap="1rem">
-          <SubTitle>
-            <span>Accounts</span>
-            <span />
-            <span>Balances</span>
-          </SubTitle>
-          <ResumeTable />
-        </Grid>
+        <BigTotal />
+        <BalanceGraph />
+        <ResumeTable />
       </>
     );
   };
@@ -74,6 +47,13 @@ const TablesPage: FunctionComponent = () => {
   return (
     <Template
       footerActions={[
+        <FiPlusSquare
+          key="add"
+          role="button"
+          onClick={() => {
+            router.push("/add");
+          }}
+        />,
         <FiGlobe
           key="lang"
           role="button"
@@ -90,22 +70,9 @@ const TablesPage: FunctionComponent = () => {
             router.push("/edit");
           }}
         />,
-        <FiPlusSquare
-          key="add"
-          role="button"
-          onClick={() => {
-            router.push("/add");
-          }}
-        />,
-        <FiRefreshCw
-          key="refresh"
-          role="button"
-          onClick={() => {
-            router.reload();
-          }}
-        />,
       ]}
     >
+      <Title>Dashboard</Title>
       {renderContent()}
     </Template>
   );

@@ -8,12 +8,14 @@ import Template from "../../components/Template";
 import { useRates } from "../../providers/rates";
 import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
+import Grid from "../../components/Grid";
+import Card from "../../components/Card";
 import { Account } from "../../types";
 
 const StyledForm = styled.form``;
 
 const StyledText = styled.p`
-  font-size: 1.125rem;
+  margin: 0;
 `;
 
 const AccountName = styled(StyledText)`
@@ -67,11 +69,15 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>Delete account</Title>
-      <StyledForm>
-        <StyledText>You are about to delete the account:</StyledText>
-        <AccountName>{selectedAccount.name}</AccountName>
-        <StyledText>Are you sure?</StyledText>
-      </StyledForm>
+      <Card>
+        <StyledForm>
+          <Grid gap=".5rem">
+            <StyledText>You are about to delete the account:</StyledText>
+            <AccountName>{selectedAccount.name}</AccountName>
+            <StyledText>Are you sure?</StyledText>
+          </Grid>
+        </StyledForm>
+      </Card>
     </Template>
   );
 };

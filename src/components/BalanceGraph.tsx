@@ -8,6 +8,8 @@ import { useRates } from "../providers/rates";
 import { styled } from "../providers/theme";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
+import SubTitle from "./SubTitle";
+import Card from "./Card";
 
 const PercentBar = styled.section<{ percent: Big }>`
   background-image: ${({ theme, percent }) =>
@@ -20,7 +22,7 @@ const PercentBar = styled.section<{ percent: Big }>`
   color: ${(props) => props.theme.palette.BG};
   grid-template-columns: auto auto;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;
   align-items: center;
   overflow: hidden;
   display: grid;
@@ -51,10 +53,17 @@ const BalanceGraph: FunctionComponent = () => {
   const percent = isAllTotalZero ? allTotal : cadTotal.div(allTotal).times(100);
 
   return (
-    <PercentBar percent={percent}>
-      <BalanceText>{humanizedTotal(cadTotal)}</BalanceText>
-      <BalanceText>{humanizedTotal(brlTotal)}</BalanceText>
-    </PercentBar>
+    <Card>
+      <SubTitle>
+        <span>Canada</span>
+        <span>{rates && `${humanizeCad(1)} = ${humanizeBrl(rates.BRL)}`}</span>
+        <span>Brazil</span>
+      </SubTitle>
+      <PercentBar percent={percent}>
+        <BalanceText>{humanizedTotal(cadTotal)}</BalanceText>
+        <BalanceText>{humanizedTotal(brlTotal)}</BalanceText>
+      </PercentBar>
+    </Card>
   );
 };
 

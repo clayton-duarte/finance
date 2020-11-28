@@ -16,10 +16,10 @@ export interface Palette {
 }
 
 enum Shape {
-  shadow = "0 0 .5rem rgba(0,0,0,0.3)",
-  shadow_alt = "0 0 0 rgba(0,0,0,0.3)",
-  border = "2px solid rgba(0,0,0,0.3)",
-  radius = "0.25rem",
+  border = ".125rem solid #00000022",
+  shadow = "0 0 .25rem .125rem #00000022",
+  shadow_alt = "0 0 0 #00000022",
+  radius = "0.5rem",
 }
 
 enum FontFamily {

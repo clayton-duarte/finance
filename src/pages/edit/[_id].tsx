@@ -18,12 +18,7 @@ import Input from "../../components/Input";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
 import Grid from "../../components/Grid";
-
-const FormWrapper = styled.div`
-  color: ${(props) => props.theme.palette.PRIMARY};
-  display: grid;
-  gap: 1rem;
-`;
+import Card from "../../components/Card";
 
 const InputWrapper = styled.div`
   grid-template-columns: 1fr auto;
@@ -81,30 +76,32 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>edit account</Title>
-      <Grid gap="1rem">
-        <Label>Account Name</Label>
-        <Input
-          placeholder="Some bank name"
-          onChange={handleChangeName}
-          value={formData.name}
-          name="name"
-        />
-      </Grid>
-      <Grid gap="1rem">
-        <Label>Account Balance</Label>
-        <InputWrapper>
-          <InputAmount
-            onChange={handleChangeAmount}
-            currency={formData.currency}
-            value={formData.amount}
+      <Card>
+        <Grid>
+          <Label>Account Name</Label>
+          <Input
+            placeholder="Some bank name"
+            onChange={handleChangeName}
+            value={formData.name}
+            name="name"
           />
-          <Select
-            options={Object.values(Currencies)}
-            currentValue={formData.currency}
-            onChange={handleChangeCurrency}
-          />
-        </InputWrapper>
-      </Grid>
+        </Grid>
+        <Grid>
+          <Label>Account Balance</Label>
+          <InputWrapper>
+            <InputAmount
+              onChange={handleChangeAmount}
+              currency={formData.currency}
+              value={formData.amount}
+            />
+            <Select
+              options={Object.values(Currencies)}
+              currentValue={formData.currency}
+              onChange={handleChangeCurrency}
+            />
+          </InputWrapper>
+        </Grid>
+      </Card>
     </Template>
   );
 };

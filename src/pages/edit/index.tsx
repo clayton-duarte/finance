@@ -21,30 +21,8 @@ import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
 import { useSort } from "../../libs/sort";
+import Card from "../../components/Card";
 import Grid from "../../components/Grid";
-
-const Card = styled.section<{ disabled: boolean }>`
-  border-radius: ${(props) => props.theme.shape.radius};
-  box-shadow: ${(props) => props.theme.shape.shadow};
-  color: ${(props) => props.theme.palette.PRIMARY};
-  grid-template-columns: auto 1fr auto;
-  column-gap: 1rem;
-  row-gap: 0.5rem;
-  display: grid;
-  padding: 1rem;
-  margin: 0;
-  > svg {
-    color: ${(props) => props.theme.palette.SECONDARY};
-    align-self: center;
-    font-size: 1.5rem;
-  }
-  ${(props) =>
-    props.disabled &&
-    `
-  filter: grayscale(100%);
-  pointer-events: none;
-  `}
-`;
 
 const StyledText = styled.p`
   margin: 0;
@@ -99,12 +77,13 @@ const TablesPage: FunctionComponent = () => {
 
       return (
         <Card
-          disabled={isExternalAccount}
           onClick={handleClickEdit(_id)}
+          disabled={isExternalAccount}
+          columns="auto 1fr auto"
           key={_id}
         >
           {!isExternalAccount ? (
-            <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
+            <FiEdit role="button" onClick={handleClickEdit(_id)} />
           ) : (
             <FiLink />
           )}
@@ -115,7 +94,7 @@ const TablesPage: FunctionComponent = () => {
             <StyledText>{humanizedAmount()}</StyledText>
           </Grid>
           {!isExternalAccount && (
-            <FiEdit role="button" onClick={handleClickEdit(_id)} />
+            <FiTrash2 role="button" onClick={handleClickDelete(_id)} />
           )}
         </Card>
       );
