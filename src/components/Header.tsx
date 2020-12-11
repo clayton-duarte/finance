@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { useSession, signOut } from "next-auth/client";
-import { FiHome, FiUser, FiLogOut, FiLogIn } from "react-icons/fi";
+import { FiHome, FiUser, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 import { styled } from "../providers/theme";

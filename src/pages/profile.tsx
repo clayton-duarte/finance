@@ -94,6 +94,7 @@ const TablesPage: FunctionComponent = () => {
         </>
       );
     }
+
     return (
       <>
         <Title>

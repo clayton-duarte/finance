@@ -7,7 +7,7 @@ import React, {
 import { FiCheck, FiX } from "react-icons/fi";
 import { useRouter } from "next/router";
 
-import InputAmount from "../components/InputAmount";
+import InputAmount, { ReturnValue } from "../components/InputAmount";
 import LoadingPage from "../components/LoadingPage";
 import { useAccounts } from "../providers/accounts";
 import { Currencies, Account } from "../types";
@@ -39,6 +39,8 @@ const TablesPage: FunctionComponent = () => {
   const { rates, getRates } = useRates();
   const router = useRouter();
 
+  const isCad = formData.currency === Currencies.CAD;
+
   useEffect(() => {
     getAccounts();
   }, []);
@@ -53,8 +55,8 @@ const TablesPage: FunctionComponent = () => {
     setFormData({ ...formData, currency: value });
   };
 
-  const handleChangeAmount = (value: string | number) => {
-    setFormData({ ...formData, amount: value });
+  const handleChangeAmount = ({ floatValue }: ReturnValue) => {
+    setFormData({ ...formData, amount: floatValue });
   };
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,9 +97,11 @@ const TablesPage: FunctionComponent = () => {
         <Label>Account Balance</Label>
         <InputWrapper>
           <InputAmount
-            onChange={handleChangeAmount}
-            currency={formData.currency}
-            value={formData.amount}
+            thousandSeparator={isCad ? "," : "."}
+            decimalSeparator={isCad ? "." : ","}
+            onValueChange={handleChangeAmount}
+            prefix={isCad ? "$" : "R$"}
+            value={`${formData.amount}`}
           />
           <Select
             options={Object.values(Currencies)}
