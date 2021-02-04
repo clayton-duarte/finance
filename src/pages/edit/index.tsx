@@ -121,7 +121,7 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>Edit accounts</Title>
-      {renderAccounts()}
+      <Grid>{renderAccounts()}</Grid>
     </Template>
   );
 };

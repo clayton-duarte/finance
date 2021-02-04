@@ -9,7 +9,6 @@ import { styled } from "../providers/theme";
 import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 import SubTitle from "./SubTitle";
-import Card from "./Card";
 
 const PercentBar = styled.section<{ percent: Big }>`
   background-image: ${({ theme, percent }) =>
@@ -57,7 +56,7 @@ const BalanceGraph: FunctionComponent = () => {
   const percent = isAllTotalZero ? allTotal : cadTotal.div(allTotal).times(100);
 
   return (
-    <Card>
+    <>
       <SubTitle>
         <Text>Canada</Text>
         <SmallText>
@@ -69,7 +68,7 @@ const BalanceGraph: FunctionComponent = () => {
         <Text>{humanizedTotal(cadTotal)}</Text>
         <Text>{humanizedTotal(brlTotal)}</Text>
       </PercentBar>
-    </Card>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo } from "react";
+import React, { FunctionComponent } from "react";
 import { useSession } from "next-auth/client";
 import { FiLink } from "react-icons/fi";
 import Link from "next/link";
@@ -11,8 +11,8 @@ import Table from "../components/Table";
 import { useMath } from "../libs/math";
 import { useSort } from "../libs/sort";
 import { Currencies } from "../types";
+import Grid from "../components/Grid";
 import SubTitle from "./SubTitle";
-import Card from "./Card";
 
 const ResumeTable: FunctionComponent = () => {
   const [session, loading] = useSession();
@@ -61,7 +61,7 @@ const ResumeTable: FunctionComponent = () => {
 
   return (
     <Link href="/edit">
-      <Card>
+      <Grid gap="1rem">
         <SubTitle>
           <span>Accounts</span>
           <span />
@@ -71,9 +71,9 @@ const ResumeTable: FunctionComponent = () => {
           <thead>{renderTotal()}</thead>
           <tbody>{renderAccounts()}</tbody>
         </Table>
-      </Card>
+      </Grid>
     </Link>
   );
 };
 
-export default memo(ResumeTable);
+export default ResumeTable;

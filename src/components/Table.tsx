@@ -14,11 +14,11 @@ export default styled.table`
   }
 
   tr:nth-child(even) {
-    background: ${(props) => rgba(props.theme.palette.SECONDARY, 0.1)};
+    background: ${(props) => rgba(props.theme.palette.SECONDARY, 0.2)};
   }
 
   tr:nth-child(odd) {
-    background: ${(props) => rgba(props.theme.palette.SECONDARY, 0.01)};
+    background: ${(props) => rgba(props.theme.palette.SECONDARY, 0.05)};
   }
 
   td {

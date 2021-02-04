@@ -72,7 +72,6 @@ const TablesPage: FunctionComponent = () => {
         />,
       ]}
     >
-      <Title>Dashboard</Title>
       {renderContent()}
     </Template>
   );

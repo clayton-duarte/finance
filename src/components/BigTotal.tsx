@@ -9,7 +9,6 @@ import { useMath } from "../libs/math";
 import { Currencies } from "../types";
 import Title from "./Title";
 import Grid from "./Grid";
-import Card from "./Card";
 
 const StyledText = styled.p`
   color: ${(props) => props.theme.palette.PRIMARY};
@@ -37,12 +36,10 @@ const BigTotal: FunctionComponent = () => {
   };
 
   return (
-    <Card>
-      <Grid gap=".5rem">
-        <Title>balance total</Title>
-        <StyledText>{calcBigTotal()}</StyledText>
-      </Grid>
-    </Card>
+    <Grid gap=".5rem">
+      <Title>balance total</Title>
+      <StyledText>{calcBigTotal()}</StyledText>
+    </Grid>
   );
 };
 

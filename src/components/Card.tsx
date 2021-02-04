@@ -2,8 +2,6 @@ import { styled } from "../providers/theme";
 
 export default styled.section<{ disabled?: boolean; columns?: string }>`
   grid-template-columns: ${(props) => props.columns || "auto"};
-  border-radius: ${(props) => props.theme.shape.radius};
-  box-shadow: ${(props) => props.theme.shape.shadow};
   background: ${(props) => props.theme.palette.BG};
   color: ${(props) => props.theme.palette.PRIMARY};
   display: grid;
@@ -21,4 +19,7 @@ export default styled.section<{ disabled?: boolean; columns?: string }>`
     filter: grayscale(100%);
     pointer-events: none;
   `}
+  &:not(:first-child) {
+    border-top: 1px solid ${(props) => props.theme.palette.SECONDARY};
+  }
 `;

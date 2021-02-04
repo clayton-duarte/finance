@@ -9,7 +9,6 @@ import { useRates } from "../../providers/rates";
 import { styled } from "../../providers/theme";
 import Title from "../../components/Title";
 import Grid from "../../components/Grid";
-import Card from "../../components/Card";
 import { Account } from "../../types";
 
 const StyledForm = styled.form``;
@@ -69,7 +68,7 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>Delete account</Title>
-      <Card>
+      <Grid gap="1rem">
         <StyledForm>
           <Grid gap=".5rem">
             <StyledText>You are about to delete the account:</StyledText>
@@ -77,7 +76,7 @@ const TablesPage: FunctionComponent = () => {
             <StyledText>Are you sure?</StyledText>
           </Grid>
         </StyledForm>
-      </Card>
+      </Grid>
     </Template>
   );
 };

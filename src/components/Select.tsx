@@ -25,10 +25,10 @@ const StyledWrapper = styled.a`
 const StyledPopOver = styled.aside<{ offset: number; open: boolean }>`
   pointer-events: ${(props) => (props.open ? "auto" : "none")};
   border-radius: ${(props) => props.theme.shape.radius};
+  top: ${(props) => (props.open ? props.offset : 0)}px;
   background: ${(props) => props.theme.palette.BG};
   opacity: ${(props) => (props.open ? 1 : 0)};
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
-  top: ${(props) => props.offset}px;
   transition: 0.3s ease;
   padding: 0.125rem 0;
   position: absolute;
@@ -90,11 +90,14 @@ const Select: FunctionComponent<SelectProps> = ({
     >
       {currentValue}
       <StyledPopOver offset={getHeight()} open={open}>
-        {options.map((opt, index) => (
-          <StyledLabel onClick={handleSelect(index)} key={opt}>
-            {opt}
-          </StyledLabel>
-        ))}
+        {options.map((opt, index) => {
+          if (opt !== currentValue)
+            return (
+              <StyledLabel onClick={handleSelect(index)} key={opt}>
+                {opt}
+              </StyledLabel>
+            );
+        })}
       </StyledPopOver>
     </StyledWrapper>
   );

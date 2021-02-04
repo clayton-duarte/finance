@@ -17,7 +17,6 @@ import Input from "../components/Input";
 import Title from "../components/Title";
 import Label from "../components/Label";
 import Grid from "../components/Grid";
-import Card from "../components/Card";
 import { Profile } from "../types";
 
 const Text = styled.p`
@@ -118,7 +117,7 @@ const TablesPage: FunctionComponent = () => {
         ]
       }
     >
-      <Card>{renderContent()}</Card>
+      <>{renderContent()}</>
     </Template>
   );
 };

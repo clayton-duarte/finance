@@ -18,7 +18,6 @@ import Input from "../../components/Input";
 import Title from "../../components/Title";
 import Label from "../../components/Label";
 import Grid from "../../components/Grid";
-import Card from "../../components/Card";
 
 const InputWrapper = styled.div`
   grid-template-columns: 1fr auto;
@@ -78,34 +77,32 @@ const TablesPage: FunctionComponent = () => {
       ]}
     >
       <Title>edit account</Title>
-      <Card>
-        <Grid>
-          <Label>Account Name</Label>
-          <Input
-            placeholder="Some bank name"
-            onChange={handleChangeName}
-            value={formData.name}
-            name="name"
+      <Grid gap=".5rem">
+        <Label>Account Name</Label>
+        <Input
+          placeholder="Some bank name"
+          onChange={handleChangeName}
+          value={formData.name}
+          name="name"
+        />
+      </Grid>
+      <Grid gap=".5rem">
+        <Label>Account Balance</Label>
+        <InputWrapper>
+          <InputAmount
+            thousandSeparator={isCad ? "," : "."}
+            decimalSeparator={isCad ? "." : ","}
+            onValueChange={handleChangeAmount}
+            value={`${formData.amount}`}
+            prefix={isCad ? "$" : "R$"}
           />
-        </Grid>
-        <Grid>
-          <Label>Account Balance</Label>
-          <InputWrapper>
-            <InputAmount
-              thousandSeparator={isCad ? "," : "."}
-              decimalSeparator={isCad ? "." : ","}
-              onValueChange={handleChangeAmount}
-              value={`${formData.amount}`}
-              prefix={isCad ? "$" : "R$"}
-            />
-            <Select
-              options={Object.values(Currencies)}
-              currentValue={formData.currency}
-              onChange={handleChangeCurrency}
-            />
-          </InputWrapper>
-        </Grid>
-      </Card>
+          <Select
+            options={Object.values(Currencies)}
+            currentValue={formData.currency}
+            onChange={handleChangeCurrency}
+          />
+        </InputWrapper>
+      </Grid>
     </Template>
   );
 };
