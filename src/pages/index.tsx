@@ -1,36 +1,35 @@
-import React, { FunctionComponent, useEffect } from "react";
-import { FiEdit, FiGlobe, FiPlusSquare } from "react-icons/fi";
-import { useRouter } from "next/router";
+import React, { FunctionComponent, useEffect } from 'react'
+import { FiEdit, FiGlobe, FiPlusSquare } from 'react-icons/fi'
+import { useRouter } from 'next/router'
 
-import BalanceGraph from "../components/BalanceGraph";
-import LoadingPage from "../components/LoadingPage";
-import ResumeTable from "../components/ResumeTable";
-import { useAccounts } from "../providers/accounts";
-import { useCurrency } from "../providers/currency";
-import NoAccounts from "../components/NoAccounts";
-import { useRates } from "../providers/rates";
-import Template from "../components/Template";
-import BigTotal from "../components/BigTotal";
-import Title from "../components/Title";
-import { Currencies } from "../types";
+import BalanceGraph from '../components/BalanceGraph'
+import LoadingPage from '../components/LoadingPage'
+import ResumeTable from '../components/ResumeTable'
+import { useAccounts } from '../providers/accounts'
+import { useCurrency } from '../providers/currency'
+import NoAccounts from '../components/NoAccounts'
+import { useRates } from '../providers/rates'
+import Template from '../components/Template'
+import BigTotal from '../components/BigTotal'
+import { Currencies } from '../types'
 
 const TablesPage: FunctionComponent = () => {
-  const { accounts, getAccounts } = useAccounts();
-  const { currency, setCurrency } = useCurrency();
-  const { rates, getRates } = useRates();
-  const router = useRouter();
+  const { accounts, getAccounts } = useAccounts()
+  const { currency, setCurrency } = useCurrency()
+  const { rates, getRates } = useRates()
+  const router = useRouter()
 
   useEffect(() => {
-    getAccounts();
-  }, []);
+    getAccounts()
+  }, [])
 
   useEffect(() => {
-    getRates();
-  }, [rates]);
+    getRates()
+  }, [rates])
 
   const renderContent = () => {
     if (accounts.length < 1) {
-      return <NoAccounts />;
+      return <NoAccounts />
     }
 
     return (
@@ -39,10 +38,12 @@ const TablesPage: FunctionComponent = () => {
         <BalanceGraph />
         <ResumeTable />
       </>
-    );
-  };
+    )
+  }
 
-  if (!accounts || !rates) return <LoadingPage />;
+  console.log({ accounts, rates })
+
+  if (!accounts || !rates) return <LoadingPage />
 
   return (
     <Template
@@ -51,7 +52,7 @@ const TablesPage: FunctionComponent = () => {
           key="add"
           role="button"
           onClick={() => {
-            router.push("/add");
+            router.push('/add')
           }}
         />,
         <FiGlobe
@@ -60,21 +61,21 @@ const TablesPage: FunctionComponent = () => {
           onClick={() => {
             return currency === Currencies.CAD
               ? setCurrency(Currencies.BRL)
-              : setCurrency(Currencies.CAD);
+              : setCurrency(Currencies.CAD)
           }}
         />,
         <FiEdit
           key="edit"
           role="button"
           onClick={() => {
-            router.push("/edit");
+            router.push('/edit')
           }}
         />,
       ]}
     >
       {renderContent()}
     </Template>
-  );
-};
+  )
+}
 
-export default TablesPage;
+export default TablesPage

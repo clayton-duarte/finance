@@ -1,13 +1,13 @@
-import React, { FunctionComponent, useEffect } from "react";
-import { Provider as AuthProvider } from "next-auth/client";
+import React, { FunctionComponent, useEffect } from 'react'
+import { Provider as AuthProvider } from 'next-auth/client'
 
-import { AppProps } from "next/app";
+import { AppProps } from 'next/app'
 
-import ThemeProvider, { GlobalStyle } from "../providers/theme";
-import CurrencyProvider from "../providers/currency";
-import AccountsProvider from "../providers/accounts";
-import ProfileProvider from "../providers/profile";
-import RatesProvider from "../providers/rates";
+import ThemeProvider, { GlobalStyle } from '../providers/theme'
+import CurrencyProvider from '../providers/currency'
+import AccountsProvider from '../providers/accounts'
+import ProfileProvider from '../providers/profile'
+import RatesProvider from '../providers/rates'
 
 const MyApp: FunctionComponent<AppProps> = ({
   Component,
@@ -16,11 +16,11 @@ const MyApp: FunctionComponent<AppProps> = ({
 }) => {
   useEffect(() => {
     // CLEAN AS PATH
-    if (router.asPath.includes("#")) {
-      const newPath = router.asPath.replace("#", "");
-      router.replace(router.route, newPath);
+    if (router.asPath.includes('#')) {
+      const newPath = router.asPath.replace('#', '')
+      router.replace(router.route, newPath)
     }
-  }, [router.asPath]);
+  }, [router.asPath])
 
   return (
     <AuthProvider session={pageProps.session}>
@@ -37,7 +37,7 @@ const MyApp: FunctionComponent<AppProps> = ({
         </ThemeProvider>
       </CurrencyProvider>
     </AuthProvider>
-  );
-};
+  )
+}
 
-export default MyApp;
+export default MyApp
