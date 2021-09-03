@@ -11,6 +11,7 @@ import NoAccounts from '../components/NoAccounts'
 import { useRates } from '../providers/rates'
 import Template from '../components/Template'
 import BigTotal from '../components/BigTotal'
+import Grid from '../components/Grid'
 import { Currencies } from '../types'
 
 const TablesPage: FunctionComponent = () => {
@@ -35,8 +36,10 @@ const TablesPage: FunctionComponent = () => {
     return (
       <>
         <BigTotal />
-        <BalanceGraph />
-        <ResumeTable />
+        <Grid gap="1rem">
+          <BalanceGraph />
+          <ResumeTable />
+        </Grid>
       </>
     )
   }
