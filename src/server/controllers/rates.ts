@@ -11,8 +11,8 @@ const axiosInstance = Axios.create({
 const getRates: NextApiHandler = async (req, res) => {
   const options: AxiosRequestConfig = {
     params: {
-      to: Currencies.BRL,
       from: Currencies.CAD,
+      to: Currencies.BRL,
     },
   }
 
