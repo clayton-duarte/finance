@@ -4,78 +4,78 @@ import React, {
   useContext,
   useState,
   Dispatch,
-} from "react";
+} from 'react'
 
-import { useAxios } from "../libs/axios";
-import { Account } from "../types";
+import { useAxios } from '../libs/axios'
+import { Account } from '../types'
 
 const AccountsContext = createContext<{
-  setAccounts: Dispatch<Account[]>;
-  accounts: Account[];
-}>(null);
+  setAccounts: Dispatch<Account[]>
+  accounts: Account[]
+}>(null)
 
 const useAccounts = () => {
-  const { accounts, setAccounts } = useContext(AccountsContext);
-  const { axios, errorHandler } = useAxios();
+  const { accounts, setAccounts } = useContext(AccountsContext)
+  const { axios, errorHandler } = useAxios()
 
   const getAccounts = async () => {
     try {
-      const { data } = await axios.get<Account[]>("/accounts");
-      setAccounts(data);
+      const { data } = await axios.get<Account[]>('/accounts')
+      setAccounts(data)
     } catch (err) {
-      errorHandler<Account[]>(err);
+      errorHandler<Account[]>(err)
     }
-  };
+  }
 
   const postAccount = async (newAccount: Partial<Account>) => {
     if (newAccount.name && newAccount.name) {
       try {
-        await axios.post<Account[]>("/accounts", {
+        await axios.post<Account[]>('/accounts', {
           account: newAccount,
-        });
-        getAccounts();
+        })
+        getAccounts()
       } catch (err) {
-        errorHandler<Account[]>(err);
+        errorHandler<Account[]>(err)
       }
     }
-  };
+  }
 
-  const deleteAccount = async (accountId: Account["_id"]) => {
+  const deleteAccount = async (accountId: Account['_id']) => {
     try {
-      await axios.delete<Account[]>("/accounts", {
+      await axios.delete<Account[]>('/accounts', {
         params: {
           _id: accountId,
         },
-      });
-      getAccounts();
+      })
+      getAccounts()
     } catch (err) {
-      errorHandler<Account[]>(err);
+      errorHandler<Account[]>(err)
     }
-  };
+  }
 
   const updateAccount = async (updatedAccount: Account) => {
     if (updatedAccount.name && updatedAccount.name) {
       try {
-        await axios.put<Account>("/accounts", { account: updatedAccount });
-        getAccounts();
+        await axios.put<Account>('/accounts', { account: updatedAccount })
+        getAccounts()
       } catch (err) {
-        errorHandler<Account>(err);
+        errorHandler<Account>(err)
       }
     }
-  };
+  }
 
-  return { accounts, deleteAccount, getAccounts, postAccount, updateAccount };
-};
+  return { accounts, deleteAccount, getAccounts, postAccount, updateAccount }
+}
 
 const AccountsProvider: FunctionComponent = ({ children }) => {
-  const [accounts, setAccounts] = useState<Account[]>(null);
+  const [accounts, setAccounts] = useState<Account[]>(null)
 
   return (
     <AccountsContext.Provider value={{ accounts, setAccounts }}>
       {children}
     </AccountsContext.Provider>
-  );
-};
+  )
+}
 
-export default AccountsProvider;
-export { useAccounts };
+export default AccountsProvider
+export { useAccounts }

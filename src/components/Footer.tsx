@@ -1,6 +1,6 @@
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from 'react'
 
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 const StyledFooter = styled.footer`
   background: ${(props) => props.theme.palette.PRIMARY};
@@ -10,7 +10,7 @@ const StyledFooter = styled.footer`
   font-size: 2rem;
   display: grid;
   bottom: 0;
-`;
+`
 
 const StyledTemplate = styled.section<{ actions: number }>`
   grid-template-columns: repeat(${(props) => props.actions}, auto);
@@ -20,7 +20,7 @@ const StyledTemplate = styled.section<{ actions: number }>`
   display: grid;
   padding: 1rem;
   width: 100%;
-`;
+`
 
 const Footer: FunctionComponent<{ actions: JSX.Element[] }> = ({ actions }) => {
   if (actions) {
@@ -30,10 +30,10 @@ const Footer: FunctionComponent<{ actions: JSX.Element[] }> = ({ actions }) => {
           <>{actions}</>
         </StyledTemplate>
       </StyledFooter>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}
 
-export default Footer;
+export default Footer

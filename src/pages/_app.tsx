@@ -20,7 +20,7 @@ const MyApp: FunctionComponent<AppProps> = ({
       const newPath = router.asPath.replace('#', '')
       router.replace(router.route, newPath)
     }
-  }, [router.asPath])
+  }, [router, router.asPath])
 
   return (
     <AuthProvider session={pageProps.session}>

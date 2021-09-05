@@ -1,4 +1,4 @@
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 export default styled.label`
   font-family: ${(props) => props.theme.fontFamily.bold};
@@ -6,4 +6,4 @@ export default styled.label`
   text-transform: capitalize;
   font-weight: bold;
   font-size: 1rem;
-`;
+`

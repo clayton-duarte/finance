@@ -1,7 +1,7 @@
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 export default styled.section<{ disabled?: boolean; columns?: string }>`
-  grid-template-columns: ${(props) => props.columns || "auto"};
+  grid-template-columns: ${(props) => props.columns || 'auto'};
   background: ${(props) => props.theme.palette.BG};
   color: ${(props) => props.theme.palette.PRIMARY};
   display: grid;
@@ -22,4 +22,4 @@ export default styled.section<{ disabled?: boolean; columns?: string }>`
   &:not(:first-child) {
     border-top: 1px solid ${(props) => props.theme.palette.SECONDARY};
   }
-`;
+`

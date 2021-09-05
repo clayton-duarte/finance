@@ -22,11 +22,11 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getAccounts()
-  }, [])
+  }, [getAccounts])
 
   useEffect(() => {
     getRates()
-  }, [rates])
+  }, [getRates, rates])
 
   const renderContent = () => {
     if (accounts.length < 1) {

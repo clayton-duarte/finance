@@ -1,4 +1,4 @@
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 export default styled.input`
   border: 2px solid ${(props) => props.theme.palette.SECONDARY};
@@ -10,4 +10,4 @@ export default styled.input`
   &:focus {
     outline: none;
   }
-`;
+`

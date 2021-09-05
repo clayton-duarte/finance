@@ -1,7 +1,7 @@
-import React, { useRef, useState, FunctionComponent, Dispatch } from "react";
-import { rgba } from "polished";
+import React, { useRef, useState, FunctionComponent, Dispatch } from 'react'
+import { rgba } from 'polished'
 
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 const StyledWrapper = styled.a`
   border: ${(props) => props.theme.shape.border};
@@ -20,10 +20,10 @@ const StyledWrapper = styled.a`
     color: ${(props) => props.theme.palette.TEXT};
     outline: none;
   }
-`;
+`
 
 const StyledPopOver = styled.aside<{ offset: number; open: boolean }>`
-  pointer-events: ${(props) => (props.open ? "auto" : "none")};
+  pointer-events: ${(props) => (props.open ? 'auto' : 'none')};
   border-radius: ${(props) => props.theme.shape.radius};
   top: ${(props) => (props.open ? props.offset : 0)}px;
   background: ${(props) => props.theme.palette.BG};
@@ -37,7 +37,7 @@ const StyledPopOver = styled.aside<{ offset: number; open: boolean }>`
   z-index: 99;
   right: 0;
   left: 0;
-`;
+`
 
 const StyledLabel = styled.label`
   justify-content: center;
@@ -47,12 +47,12 @@ const StyledLabel = styled.label`
   &:hover {
     background: ${(props) => rgba(props.theme.palette.PRIMARY, 0.2)};
   }
-`;
+`
 
 interface SelectProps {
-  onChange: Dispatch<string>;
-  currentValue: string;
-  options: string[];
+  onChange: Dispatch<string>
+  currentValue: string
+  options: string[]
 }
 
 const Select: FunctionComponent<SelectProps> = ({
@@ -60,26 +60,26 @@ const Select: FunctionComponent<SelectProps> = ({
   onChange,
   options,
 }) => {
-  const wrapperRef = useRef<HTMLAnchorElement>();
-  const [open, setOpen] = useState<boolean>();
+  const wrapperRef = useRef<HTMLAnchorElement>()
+  const [open, setOpen] = useState<boolean>()
 
   const getHeight = () => {
-    return wrapperRef.current?.getClientRects()[0]?.height;
-  };
+    return wrapperRef.current?.getClientRects()[0]?.height
+  }
 
   const handleBlur = (e) => {
-    e.preventDefault();
-    setOpen(false);
-  };
+    e.preventDefault()
+    setOpen(false)
+  }
 
   const handleClick = (e) => {
-    e.preventDefault();
-    setOpen(!open);
-  };
+    e.preventDefault()
+    setOpen(!open)
+  }
 
   const handleSelect = (index) => () => {
-    onChange(options[index]);
-  };
+    onChange(options[index])
+  }
 
   return (
     <StyledWrapper
@@ -96,11 +96,11 @@ const Select: FunctionComponent<SelectProps> = ({
               <StyledLabel onClick={handleSelect(index)} key={opt}>
                 {opt}
               </StyledLabel>
-            );
+            )
         })}
       </StyledPopOver>
     </StyledWrapper>
-  );
-};
+  )
+}
 
-export default Select;
+export default Select

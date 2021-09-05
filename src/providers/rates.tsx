@@ -4,42 +4,42 @@ import React, {
   useContext,
   useState,
   Dispatch,
-} from "react";
+} from 'react'
 
-import { RatesResponse } from "../types";
-import { useAxios } from "../libs/axios";
+import { RatesResponse } from '../types'
+import { useAxios } from '../libs/axios'
 
 const RatesContext = createContext<{
-  setRates: Dispatch<RatesResponse>;
-  rates: RatesResponse;
-}>(null);
+  setRates: Dispatch<RatesResponse>
+  rates: RatesResponse
+}>(null)
 
 const useRates = () => {
-  const { rates, setRates } = useContext(RatesContext);
-  const { axios, errorHandler } = useAxios();
+  const { rates, setRates } = useContext(RatesContext)
+  const { axios, errorHandler } = useAxios()
 
   const getRates = async () => {
     if (!rates)
       try {
-        const { data } = await axios.get<RatesResponse>("/rates");
-        setRates(data);
+        const { data } = await axios.get<RatesResponse>('/rates')
+        setRates(data)
       } catch (err) {
-        errorHandler<RatesResponse>(err);
+        errorHandler<RatesResponse>(err)
       }
-  };
+  }
 
-  return { rates, getRates };
-};
+  return { rates, getRates }
+}
 
 const RatesProvider: FunctionComponent = ({ children }) => {
-  const [rates, setRates] = useState<RatesResponse>(null);
+  const [rates, setRates] = useState<RatesResponse>(null)
 
   return (
     <RatesContext.Provider value={{ rates, setRates }}>
       {children}
     </RatesContext.Provider>
-  );
-};
+  )
+}
 
-export default RatesProvider;
-export { useRates };
+export default RatesProvider
+export { useRates }

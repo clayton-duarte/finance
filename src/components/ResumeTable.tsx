@@ -60,7 +60,7 @@ const ResumeTable: FunctionComponent = () => {
   }
 
   return (
-    <Link href="/edit">
+    <Link passHref href="/edit">
       <Grid gap="1rem">
         <SubTitle>
           <span>Account</span>

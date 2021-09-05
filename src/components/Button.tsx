@@ -1,9 +1,9 @@
-import { styled, Palette } from "../providers/theme";
+import { styled, Palette } from '../providers/theme'
 
 export default styled.button<{
-  color?: keyof Palette;
+  color?: keyof Palette
 }>`
-  background: ${({ color, theme }) => theme.palette[color || "PRIMARY"]};
+  background: ${({ color, theme }) => theme.palette[color || 'PRIMARY']};
   font-family: ${(props) => props.theme.fontFamily.regular};
   border-radius: ${(props) => props.theme.shape.radius};
   border: ${(props) => props.theme.shape.border};
@@ -21,4 +21,4 @@ export default styled.button<{
   &:disabled {
     filter: grayscale(100%);
   }
-`;
+`

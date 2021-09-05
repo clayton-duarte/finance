@@ -1,30 +1,30 @@
-import { NextApiHandler } from "next";
-import { getSession } from "next-auth/client";
+import { NextApiHandler } from 'next'
+import { getSession } from 'next-auth/client'
 
-import { ProfileModel } from "../mongoose/models";
-import dbConnect from "../mongoose/dbConnect";
+import { ProfileModel } from '../mongoose/models'
+import dbConnect from '../mongoose/dbConnect'
 
 const getProfile: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  await dbConnect();
+  const session = await getSession({ req })
+  const { email } = session.user
+  await dbConnect()
 
   try {
-    const results = await ProfileModel.findOne({ email });
-    res.json(results);
+    const results = await ProfileModel.findOne({ email })
+    res.json(results)
   } catch (error) {
-    res.status(502).send(error);
+    res.status(502).send(error)
   }
-};
+}
 
 const putProfile: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  const { profile } = req.body;
-  await dbConnect();
+  const session = await getSession({ req })
+  const { email } = session.user
+  const { profile } = req.body
+  await dbConnect()
 
   try {
-    delete profile.email;
+    delete profile.email
     const results = await ProfileModel.updateOne(
       { email },
       {
@@ -32,11 +32,11 @@ const putProfile: NextApiHandler = async (req, res) => {
         ...profile,
       },
       { upsert: true }
-    );
-    res.json(results);
+    )
+    res.json(results)
   } catch (error) {
-    res.status(502).send(error);
+    res.status(502).send(error)
   }
-};
+}
 
-export { getProfile, putProfile };
+export { getProfile, putProfile }

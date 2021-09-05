@@ -1,5 +1,5 @@
-import { styled } from "../providers/theme";
-import { rgba } from "polished";
+import { styled } from '../providers/theme'
+import { rgba } from 'polished'
 
 export default styled.table`
   border-radius: ${(props) => props.theme.shape.radius};
@@ -31,4 +31,4 @@ export default styled.table`
   td:not(:first-child) {
     text-align: right;
   }
-`;
+`

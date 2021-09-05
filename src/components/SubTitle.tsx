@@ -1,4 +1,4 @@
-import { styled } from "../providers/theme";
+import { styled } from '../providers/theme'
 
 export default styled.h3`
   border-bottom: 2px solid ${(props) => props.theme.palette.SECONDARY};
@@ -12,4 +12,4 @@ export default styled.h3`
   display: grid;
   margin: 0;
   gap: 1rem;
-`;
+`
