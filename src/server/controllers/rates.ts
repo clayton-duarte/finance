@@ -21,7 +21,6 @@ const getRates: NextApiHandler = async (req, res) => {
       '/latest',
       options
     )
-    console.log(response)
 
     return res.json(response.data.rates)
   } catch (error) {

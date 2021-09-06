@@ -43,11 +43,11 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getAccounts()
-  }, [getAccounts])
+  }, [])
 
   useEffect(() => {
     getRates()
-  }, [getRates, rates])
+  }, [rates])
 
   if (!accounts || !rates) return <LoadingPage />
 

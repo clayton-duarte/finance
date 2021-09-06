@@ -32,7 +32,7 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getProfile()
-  }, [getProfile])
+  }, [])
 
   useEffect(() => {
     if (profile) {

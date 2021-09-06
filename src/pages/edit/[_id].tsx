@@ -34,13 +34,13 @@ const TablesPage: FunctionComponent = () => {
 
   useEffect(() => {
     getAccounts()
-  }, [getAccounts])
+  }, [])
 
   useEffect(() => {
     if (accounts) {
       setFormData(accounts.find(({ _id }) => _id === router.query._id))
     }
-  }, [accounts, router.query._id])
+  }, [accounts])
 
   if (!accounts || !formData) return <LoadingPage />
 

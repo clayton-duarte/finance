@@ -1,32 +1,38 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { FunctionComponent } from 'react'
 import { FiEdit, FiGlobe, FiPlusSquare } from 'react-icons/fi'
 import { useRouter } from 'next/router'
 
+import { Account, Currencies, RatesResponse } from '../types'
 import BalanceGraph from '../components/BalanceGraph'
-import LoadingPage from '../components/LoadingPage'
 import ResumeTable from '../components/ResumeTable'
-import { useAccounts } from '../providers/accounts'
 import { useCurrency } from '../providers/currency'
 import NoAccounts from '../components/NoAccounts'
-import { useRates } from '../providers/rates'
+import { withSSP } from '../libs/withSSP'
 import Template from '../components/Template'
 import BigTotal from '../components/BigTotal'
 import Grid from '../components/Grid'
-import { Currencies } from '../types'
 
-const TablesPage: FunctionComponent = () => {
-  const { accounts, getAccounts } = useAccounts()
+interface PageProps {
+  rates: RatesResponse
+  accounts: Account[]
+}
+
+export const getServerSideProps = withSSP(async (_, axios) => {
+  const { data: accounts } = await axios.get<Account[]>('/accounts')
+  const { data: rates } = await axios.get<RatesResponse>('/rates')
+  console.log('>>>>>>>>>>>>>> getServerSideProps')
+
+  return {
+    props: {
+      accounts,
+      rates,
+    },
+  }
+})
+
+const TablesPage: FunctionComponent<PageProps> = ({ accounts }) => {
   const { currency, setCurrency } = useCurrency()
-  const { rates, getRates } = useRates()
   const router = useRouter()
-
-  useEffect(() => {
-    getAccounts()
-  }, [getAccounts])
-
-  useEffect(() => {
-    getRates()
-  }, [getRates, rates])
 
   const renderContent = () => {
     if (accounts.length < 1) {
@@ -43,10 +49,6 @@ const TablesPage: FunctionComponent = () => {
       </>
     )
   }
-
-  console.log({ accounts, rates })
-
-  if (!accounts || !rates) return <LoadingPage />
 
   return (
     <Template
