@@ -4,26 +4,23 @@ import { FiLink } from 'react-icons/fi'
 import Link from 'next/link'
 
 import { humanizeBrl, humanizeCad } from '../libs/format'
-import { useAccounts } from '../providers/accounts'
 import { useCurrency } from '../providers/currency'
-import { useRates } from '../providers/rates'
 import Table from '../components/Table'
 import { useMath } from '../libs/math'
 import { useSort } from '../libs/sort'
-import { Currencies } from '../types'
+import { Account, Currencies, RatesResponse } from '../types'
 import Grid from '../components/Grid'
 import SubTitle from './SubTitle'
 
-const ResumeTable: FunctionComponent = () => {
-  const [session, loading] = useSession()
+const ResumeTable: FunctionComponent<{
+  rates: RatesResponse
+  accounts: Account[]
+}> = ({ rates, accounts }) => {
+  const [session] = useSession()
   const { currency } = useCurrency()
-  const { accounts } = useAccounts()
-  const { rates } = useRates()
 
   const { toBrl, toCad, totalInCad, totalInBrl } = useMath(accounts, rates)
   const { sortAccounts } = useSort(session?.user?.email, accounts, rates)
-
-  if (!accounts || !rates || loading) return null
 
   const renderAccounts = () => {
     return accounts.sort(sortAccounts).map((account) => {

@@ -1,24 +1,18 @@
-import React, {
-  FunctionComponent,
-  ChangeEvent,
-  useEffect,
-  useState,
-} from 'react'
+import React, { FunctionComponent, ChangeEvent, useState } from 'react'
 import { FiCheck, FiX } from 'react-icons/fi'
 import { useRouter } from 'next/router'
+import axios from 'axios'
 
 import InputAmount, { ReturnValue } from '../components/InputAmount'
-import LoadingPage from '../components/LoadingPage'
-import { useAccounts } from '../providers/accounts'
-import { Currencies, Account } from '../types'
+import { Currencies, Account, RatesResponse } from '../types'
 import Template from '../components/Template'
-import { useRates } from '../providers/rates'
 import { styled } from '../providers/theme'
 import Select from '../components/Select'
 import Input from '../components/Input'
 import Title from '../components/Title'
 import Label from '../components/Label'
 import Grid from '../components/Grid'
+import { withSSP } from '../libs/withSSP'
 
 const InputWrapper = styled.div`
   grid-template-columns: 1fr auto;
@@ -33,23 +27,32 @@ const initialData: Account = {
   name: '',
 }
 
-const TablesPage: FunctionComponent = () => {
-  const { accounts, getAccounts, postAccount } = useAccounts()
+interface PageProps {
+  rates: RatesResponse
+  accounts: Account[]
+}
+
+export const getServerSideProps = withSSP(async (_, axios) => {
+  const { data: accounts } = await axios.get<Account[]>('/accounts')
+  const { data: rates } = await axios.get<RatesResponse>('/rates')
+  console.log({
+    accounts,
+    rates,
+  })
+
+  return {
+    props: {
+      accounts,
+      rates,
+    },
+  }
+})
+
+const TablesPage: FunctionComponent<PageProps> = ({ rates, accounts }) => {
   const [formData, setFormData] = useState<Account>(initialData)
-  const { rates, getRates } = useRates()
   const router = useRouter()
 
   const isCad = formData.currency === Currencies.CAD
-
-  useEffect(() => {
-    getAccounts()
-  }, [])
-
-  useEffect(() => {
-    getRates()
-  }, [rates])
-
-  if (!accounts || !rates) return <LoadingPage />
 
   const handleChangeCurrency = (value: Currencies) => {
     setFormData({ ...formData, currency: value })
@@ -63,6 +66,19 @@ const TablesPage: FunctionComponent = () => {
     setFormData({ ...formData, name: e.target.value })
   }
 
+  const postAccount = async () => {
+    if (formData.name && formData.name) {
+      try {
+        await axios.post<Account[]>('/api/accounts', {
+          account: formData,
+        })
+        router.push('/edit')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
   return (
     <Template
       footerActions={[
@@ -73,14 +89,7 @@ const TablesPage: FunctionComponent = () => {
             router.push('/')
           }}
         />,
-        <FiCheck
-          key="confirm"
-          role="button"
-          onClick={async () => {
-            await postAccount(formData)
-            router.push('/edit')
-          }}
-        />,
+        <FiCheck key="confirm" role="button" onClick={postAccount} />,
       ]}
     >
       <Title>add new account</Title>

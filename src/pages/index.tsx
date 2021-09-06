@@ -20,8 +20,6 @@ interface PageProps {
 export const getServerSideProps = withSSP(async (_, axios) => {
   const { data: accounts } = await axios.get<Account[]>('/accounts')
   const { data: rates } = await axios.get<RatesResponse>('/rates')
-  console.log('>>>>>>>>>>>>>> getServerSideProps')
-
   return {
     props: {
       accounts,
@@ -30,7 +28,7 @@ export const getServerSideProps = withSSP(async (_, axios) => {
   }
 })
 
-const TablesPage: FunctionComponent<PageProps> = ({ accounts }) => {
+const TablesPage: FunctionComponent<PageProps> = ({ accounts, rates }) => {
   const { currency, setCurrency } = useCurrency()
   const router = useRouter()
 
@@ -41,10 +39,10 @@ const TablesPage: FunctionComponent<PageProps> = ({ accounts }) => {
 
     return (
       <>
-        <BigTotal />
+        <BigTotal rates={rates} accounts={accounts} />
         <Grid gap="1rem">
-          <BalanceGraph />
-          <ResumeTable />
+          <BalanceGraph rates={rates} accounts={accounts} />
+          <ResumeTable rates={rates} accounts={accounts} />
         </Grid>
       </>
     )

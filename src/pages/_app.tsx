@@ -5,9 +5,7 @@ import Error from 'next/error'
 
 import ThemeProvider, { GlobalStyle } from '../providers/theme'
 import CurrencyProvider from '../providers/currency'
-import AccountsProvider from '../providers/accounts'
 import ProfileProvider from '../providers/profile'
-import RatesProvider from '../providers/rates'
 import { PageProps, SuccessProps } from '../libs/withSSP'
 
 interface SSRAppProps extends AppProps<SuccessProps> {
@@ -15,7 +13,7 @@ interface SSRAppProps extends AppProps<SuccessProps> {
 }
 
 const MyApp: FunctionComponent<SSRAppProps> = ({
-  Component,
+  Component: Page,
   pageProps,
   router,
 }) => {
@@ -28,7 +26,6 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
   }, [router, router.asPath])
 
   if (pageProps.success === false) {
-    console.log(pageProps)
     return <Error {...pageProps.error} />
   }
 
@@ -36,13 +33,9 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
     <AuthProvider session={pageProps.session}>
       <CurrencyProvider>
         <ThemeProvider>
-          <RatesProvider>
-            <ProfileProvider>
-              <AccountsProvider>
-                <Component {...pageProps} key={router.route} />
-              </AccountsProvider>
-            </ProfileProvider>
-          </RatesProvider>
+          <ProfileProvider>
+            <Page {...pageProps} key={router.route} />
+          </ProfileProvider>
           <GlobalStyle />
         </ThemeProvider>
       </CurrencyProvider>

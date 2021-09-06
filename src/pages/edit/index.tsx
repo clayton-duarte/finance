@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, MouseEvent } from 'react'
+import React, { FunctionComponent, MouseEvent } from 'react'
 import {
   FiPlusSquare,
   FiArrowLeft,
@@ -10,14 +10,12 @@ import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Big from 'big.js'
 
+import { Currencies, Account, RatesResponse } from '../../types'
 import { humanizeBrl, humanizeCad } from '../../libs/format'
-import LoadingPage from '../../components/LoadingPage'
-import { useAccounts } from '../../providers/accounts'
-import { useRates } from '../../providers/rates'
 import NoAccounts from '../../components/NoAccounts'
-import { Currencies, Account } from '../../types'
 import Template from '../../components/Template'
 import { styled } from '../../providers/theme'
+import { withSSP } from '../../libs/withSSP'
 import Title from '../../components/Title'
 import Label from '../../components/Label'
 import { useSort } from '../../libs/sort'
@@ -34,23 +32,27 @@ const StyledSpan = styled.span`
   font-size: 0.75rem;
 `
 
-const TablesPage: FunctionComponent = () => {
-  const { accounts, getAccounts } = useAccounts()
-  const [session, loading] = useSession()
-  const { rates, getRates } = useRates()
+interface PageProps {
+  rates: RatesResponse
+  accounts: Account[]
+}
+
+export const getServerSideProps = withSSP(async (_, axios) => {
+  const { data: accounts } = await axios.get<Account[]>('/accounts')
+  const { data: rates } = await axios.get<RatesResponse>('/rates')
+  return {
+    props: {
+      accounts,
+      rates,
+    },
+  }
+})
+
+const TablesPage: FunctionComponent<PageProps> = ({ rates, accounts }) => {
+  const [session] = useSession()
   const router = useRouter()
 
   const { sortAccounts } = useSort(session?.user?.email, accounts, rates)
-
-  useEffect(() => {
-    getAccounts()
-  }, [])
-
-  useEffect(() => {
-    if (!rates) getRates()
-  }, [rates])
-
-  if (!accounts || !rates || loading) return <LoadingPage />
 
   const handleClickEdit = (_id: string) => (e: MouseEvent) => {
     router.push('/edit/[_id]', `/edit/${_id}`)

@@ -1,51 +1,57 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { FiCheck, FiX } from "react-icons/fi";
-import { useRouter } from "next/router";
+import React, { FunctionComponent, useEffect, useState } from 'react'
+import { FiCheck, FiX } from 'react-icons/fi'
+import { useRouter } from 'next/router'
+import axios from 'axios'
 
-import LoadingPage from "../../components/LoadingPage";
-import { useAccounts } from "../../providers/accounts";
-import Template from "../../components/Template";
-import { useRates } from "../../providers/rates";
-import { styled } from "../../providers/theme";
-import Title from "../../components/Title";
-import Grid from "../../components/Grid";
-import { Account } from "../../types";
+import LoadingPage from '../../components/LoadingPage'
+import Template from '../../components/Template'
+import { styled } from '../../providers/theme'
+import { withSSP } from '../../libs/withSSP'
+import Title from '../../components/Title'
+import Grid from '../../components/Grid'
+import { Account } from '../../types'
 
-const StyledForm = styled.form``;
+const StyledForm = styled.form``
 
 const StyledText = styled.p`
   margin: 0;
-`;
+`
 
 const AccountName = styled(StyledText)`
   color: ${(props) => props.theme.palette.SECONDARY};
   text-transform: capitalize;
-`;
+`
 
-const TablesPage: FunctionComponent = () => {
-  const { accounts, deleteAccount, getAccounts } = useAccounts();
-  const [selectedAccount, setSelectedAccount] = useState<Account>();
-  const { rates, getRates } = useRates();
+type PageProps = {
+  account: Account
+}
 
-  const router = useRouter();
-  const accountId = String(router.query._id);
+export const getServerSideProps = withSSP<PageProps>(
+  async ({ params }, axios) => {
+    const { data: accounts } = await axios.get<Account[]>('/accounts')
 
-  useEffect(() => {
-    getAccounts();
-  }, []);
-
-  useEffect(() => {
-    getRates();
-  }, [rates]);
-
-  useEffect(() => {
-    if (accounts && accountId) {
-      const accountFound = accounts.find((ac) => ac._id === accountId);
-      setSelectedAccount(accountFound);
+    return {
+      props: {
+        account: accounts.find(({ _id }) => _id === params?._id),
+      },
     }
-  }, [accountId, accounts]);
+  }
+)
+const TablesPage: FunctionComponent<PageProps> = ({ account }) => {
+  const router = useRouter()
 
-  if (!accounts || !selectedAccount) return <LoadingPage />;
+  const deleteAccount = async () => {
+    try {
+      await axios.delete<Account[]>('/api/accounts', {
+        params: {
+          _id: account._id,
+        },
+      })
+      router.push('/edit')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <Template
@@ -54,17 +60,10 @@ const TablesPage: FunctionComponent = () => {
           key="cancel"
           role="button"
           onClick={() => {
-            router.push("/");
+            router.push('/')
           }}
         />,
-        <FiCheck
-          key="confirm"
-          role="button"
-          onClick={async () => {
-            await deleteAccount(accountId);
-            router.push("/edit");
-          }}
-        />,
+        <FiCheck onClick={deleteAccount} key="confirm" role="button" />,
       ]}
     >
       <Title>Delete account</Title>
@@ -72,13 +71,13 @@ const TablesPage: FunctionComponent = () => {
         <StyledForm>
           <Grid gap=".5rem">
             <StyledText>You are about to delete the account:</StyledText>
-            <AccountName>{selectedAccount.name}</AccountName>
+            <AccountName>{account.name}</AccountName>
             <StyledText>Are you sure?</StyledText>
           </Grid>
         </StyledForm>
       </Grid>
     </Template>
-  );
-};
+  )
+}
 
-export default TablesPage;
+export default TablesPage

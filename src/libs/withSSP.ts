@@ -7,7 +7,7 @@ type RequestFunction<
 > = (
   context: GetServerSidePropsContext<Q>,
   axiosInstance: AxiosInstance
-) => Promise<P>
+) => Promise<{ props: P }>
 
 export interface SuccessProps extends Record<string, unknown> {
   success: true
@@ -30,14 +30,13 @@ export function withSSP<
   Q extends Record<string, string> = Record<string, never>
 >(onRequest: RequestFunction<P, Q>): GetServerSideProps<PageProps<P>, Q> {
   return async (context) => {
-    function createAxiosConfig(): AxiosRequestConfig {
-      const baseURL = `${process.env.NEXT_PUBLIC_CANNON_URL}/api`
-      return { baseURL }
-    }
-    const axiosInstance = Axios.create(createAxiosConfig())
+    const axiosInstance = Axios.create({
+      baseURL: `${process.env.NEXT_PUBLIC_CANNON_URL}/api`,
+      headers: context.req.headers,
+    })
     try {
-      const data = await onRequest(context, axiosInstance)
-      return { props: { success: true, ...data } }
+      const { props } = await onRequest(context, axiosInstance)
+      return { props: { success: true, ...props } }
     } catch (unknownError: unknown) {
       if (typeof unknownError === 'object' && 'isAxiosError' in unknownError) {
         const axiosError = unknownError as AxiosError

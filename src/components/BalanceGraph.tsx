@@ -2,12 +2,10 @@ import React, { FunctionComponent } from 'react'
 import Big from 'big.js'
 
 import { humanizeBrl, humanizeCad } from '../libs/format'
-import { useAccounts } from '../providers/accounts'
 import { useCurrency } from '../providers/currency'
-import { useRates } from '../providers/rates'
 import { styled } from '../providers/theme'
 import { useMath } from '../libs/math'
-import { Currencies } from '../types'
+import { Account, Currencies, RatesResponse } from '../types'
 import SubTitle from './SubTitle'
 
 const PercentBar = styled.section<{ percent: Big }>`
@@ -33,14 +31,13 @@ const SmallText = styled.span`
   font-size: 1rem;
 `
 
-const BalanceGraph: FunctionComponent = () => {
-  const { accounts } = useAccounts()
+const BalanceGraph: FunctionComponent<{
+  rates: RatesResponse
+  accounts: Account[]
+}> = ({ rates, accounts }) => {
   const { currency } = useCurrency()
-  const { rates } = useRates()
 
   const { totalByCurrency } = useMath(accounts, rates)
-
-  if (!accounts || !currency || !rates) return null
 
   const humanizedTotal = (total: Big) => {
     return currency === Currencies.CAD ? humanizeCad(total) : humanizeBrl(total)
