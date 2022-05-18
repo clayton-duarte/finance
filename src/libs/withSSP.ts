@@ -1,5 +1,5 @@
-import Axios, { AxiosRequestConfig, AxiosError, AxiosInstance } from 'axios'
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
+import Axios, { AxiosError, AxiosInstance } from "axios";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 type RequestFunction<
   P extends Record<string, unknown> = Record<string, never>,
@@ -7,23 +7,23 @@ type RequestFunction<
 > = (
   context: GetServerSidePropsContext<Q>,
   axiosInstance: AxiosInstance
-) => Promise<{ props: P }>
+) => Promise<{ props: P }>;
 
 export interface SuccessProps extends Record<string, unknown> {
-  success: true
+  success: true;
 }
 
 export interface ErrorProps {
-  success: false
+  success: false;
   error: {
-    statusCode: number
-    title: string
-  }
+    statusCode: number;
+    title: string;
+  };
 }
 
 export type PageProps<
   P extends Record<string, unknown> = Record<string, never>
-> = (SuccessProps & P) | ErrorProps
+> = (SuccessProps & P) | ErrorProps;
 
 export function withSSP<
   P extends Record<string, unknown> = Record<string, never>,
@@ -33,13 +33,25 @@ export function withSSP<
     const axiosInstance = Axios.create({
       baseURL: `${process.env.NEXT_PUBLIC_CANNON_URL}/api`,
       headers: context.req.headers,
-    })
+    });
+
     try {
-      const { props } = await onRequest(context, axiosInstance)
-      return { props: { success: true, ...props } }
+      const { props } = await onRequest(context, axiosInstance);
+      return { props: { success: true, ...props } };
     } catch (unknownError: unknown) {
-      if (typeof unknownError === 'object' && 'isAxiosError' in unknownError) {
-        const axiosError = unknownError as AxiosError
+      if (typeof unknownError === "object" && "isAxiosError" in unknownError) {
+        const axiosError = unknownError as AxiosError;
+        console.log(axiosError.response.status);
+
+        if (axiosError.response.status === 401) {
+          return {
+            redirect: {
+              permanent: false,
+              destination: "/profile",
+            },
+          };
+        }
+
         return {
           props: {
             success: false,
@@ -48,10 +60,10 @@ export function withSSP<
               title: axiosError.response.statusText,
             },
           },
-        }
+        };
       }
       // TODO: handle other errors
-      throw Error('Panic!')
+      throw Error("Panic!");
     }
-  }
+  };
 }
