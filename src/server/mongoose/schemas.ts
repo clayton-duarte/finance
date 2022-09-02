@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
+// import mongooseDouble from "mongoose-double";
 
 import { Currencies, Account, Profile } from "../../types";
+
+// const SchemaTypes = mongooseDouble(mongoose).Schema.Types;
 
 export const AccountSchema = new mongoose.Schema<Account>({
   amount: { type: Number, default: 0 },

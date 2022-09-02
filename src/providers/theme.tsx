@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import baseStyled, {
   createGlobalStyle,
   ThemedStyledInterface,
@@ -63,7 +63,9 @@ const GlobalStyle = createGlobalStyle<{ theme: Theme }>`
   }
 `;
 
-const MyThemeProvider: FunctionComponent = ({ children }) => {
+const MyThemeProvider: FunctionComponent<{ children: ReactNode }> = ({
+  children,
+}) => {
   const { currency } = useCurrency();
 
   const PaletteByCurrency = {
@@ -89,7 +91,7 @@ const MyThemeProvider: FunctionComponent = ({ children }) => {
         shape: Shape,
       }}
     >
-      {children as any}
+      {children}
     </ThemeProvider>
   );
 };

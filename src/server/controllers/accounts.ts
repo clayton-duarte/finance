@@ -1,5 +1,5 @@
 import { NextApiHandler } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 import { AccountModel, ProfileModel } from "../mongoose/models";
 import dbConnect from "../mongoose/dbConnect";

@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react'
-import { useSession, signOut } from 'next-auth/client'
-import { FiHome, FiUser, FiLogOut } from 'react-icons/fi'
-import { useRouter } from 'next/router'
+import React, { FunctionComponent } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { FiHome, FiUser, FiLogOut } from "react-icons/fi";
+import { useRouter } from "next/router";
 
-import { styled } from '../providers/theme'
+import { styled } from "../providers/theme";
 
 const StyledHeader = styled.header`
   background: ${(props) => props.theme.palette.PRIMARY};
@@ -13,7 +13,7 @@ const StyledHeader = styled.header`
   font-size: 2rem;
   display: grid;
   top: 0;
-`
+`;
 
 const StyledTemplate = styled.section`
   grid-template-columns: auto auto auto;
@@ -24,49 +24,49 @@ const StyledTemplate = styled.section`
   display: grid;
   padding: 1rem;
   width: 100%;
-`
+`;
 
 const UserName = styled.span`
   text-transform: capitalize;
   font-size: 1rem;
-`
+`;
 
 const Header: FunctionComponent = () => {
-  const [session, loading] = useSession()
-  const router = useRouter()
+  const { data, status } = useSession();
+  const router = useRouter();
 
-  if (loading) return null
+  if (status === "loading") return null;
 
   const getWelcome = () => {
-    const name = session?.user?.name
+    const name = data?.user?.name;
     if (name) {
-      const [firstName] = name.split(' ')
-      return `Hello ${firstName}`
+      const [firstName] = name.split(" ");
+      return `Hello ${firstName}`;
     }
-    return 'Please Sign-in'
-  }
+    return "Please Sign-in";
+  };
 
   const renderLeftButton = () => {
-    if (session) {
-      return <FiHome onClick={() => router.push('/')} role="button" />
+    if (data) {
+      return <FiHome onClick={() => router.push("/")} role="button" />;
     }
-    return <span />
-  }
+    return <span />;
+  };
 
   const renderRightButton = () => {
-    if (router?.route?.includes('profile')) {
-      if (session) {
+    if (router?.route?.includes("profile")) {
+      if (data) {
         return (
           <FiLogOut
-            onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             role="button"
           />
-        )
+        );
       }
-      return null
+      return null;
     }
-    return <FiUser onClick={() => router.push('/profile')} role="button" />
-  }
+    return <FiUser onClick={() => router.push("/profile")} role="button" />;
+  };
 
   return (
     <StyledHeader>
@@ -76,7 +76,7 @@ const Header: FunctionComponent = () => {
         {renderRightButton()}
       </StyledTemplate>
     </StyledHeader>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

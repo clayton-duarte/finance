@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { Provider as AuthProvider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Error from "next/error";
 
 import ThemeProvider, { GlobalStyle } from "../providers/theme";
+import { PageProps, SuccessProps } from "../libs/withSSP";
 import CurrencyProvider from "../providers/currency";
 import ProfileProvider from "../providers/profile";
-import { PageProps, SuccessProps } from "../libs/withSSP";
 
 interface SSRAppProps extends AppProps<SuccessProps> {
   pageProps: PageProps;
@@ -17,7 +17,7 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
   pageProps,
   router,
 }) => {
-  const Page = Component as FunctionComponent;
+  const Page = Component;
   useEffect(() => {
     // CLEAN AS PATH
     if (router.asPath.includes("#")) {
@@ -31,7 +31,7 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
   }
 
   return (
-    <AuthProvider session={pageProps.session}>
+    <SessionProvider session={pageProps.session}>
       <CurrencyProvider>
         <ThemeProvider>
           <ProfileProvider>
@@ -40,7 +40,7 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
           <GlobalStyle />
         </ThemeProvider>
       </CurrencyProvider>
-    </AuthProvider>
+    </SessionProvider>
   );
 };
 

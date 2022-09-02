@@ -5,43 +5,46 @@ import React, {
   useState,
   Dispatch,
   useEffect,
-} from 'react'
-import Head from 'next/head'
+  ReactNode,
+} from "react";
+import Head from "next/head";
 
-import { useCookies } from '../libs/cookies'
-import { Currencies } from '../types'
+import { useCookies } from "../libs/cookies";
+import { Currencies } from "../types";
 
 const CurrencyContext = createContext<{
-  setCurrency: Dispatch<Currencies>
-  currency: Currencies
-}>(null)
+  setCurrency: Dispatch<Currencies>;
+  currency: Currencies;
+}>(null);
 
 const useCurrency = () => {
-  const { currency, setCurrency } = useContext(CurrencyContext)
-  return { currency, setCurrency }
-}
+  const { currency, setCurrency } = useContext(CurrencyContext);
+  return { currency, setCurrency };
+};
 
-const CurrencyProvider: FunctionComponent = ({ children }) => {
-  const { getCurrencyCookie, setCurrencyCookie } = useCookies()
+const CurrencyProvider: FunctionComponent<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const { getCurrencyCookie, setCurrencyCookie } = useCookies();
   const [currency, setCurrency] = useState<Currencies>(
     getCurrencyCookie() || Currencies.CAD
-  )
+  );
 
   useEffect(() => {
-    setCurrencyCookie(currency)
-  }, [currency])
+    setCurrencyCookie(currency);
+  }, [currency]);
 
   return (
     <CurrencyContext.Provider value={{ currency, setCurrency }}>
       <>
         <Head>
-          <title>Finance - {currency}</title>
+          <title>Finance</title>
         </Head>
         {children}
       </>
     </CurrencyContext.Provider>
-  )
-}
+  );
+};
 
-export default CurrencyProvider
-export { useCurrency }
+export default CurrencyProvider;
+export { useCurrency };

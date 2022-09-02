@@ -1,19 +1,26 @@
-import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import { NextApiRequest, NextApiResponse } from "next";
+import GoogleProvider from "next-auth/providers/google";
+import NextAuth, { NextAuthOptions } from "next-auth";
 
-const options = {
+const options: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
   providers: [
-    Providers.Google({
+    GoogleProvider({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       clientId: process.env.GOOGLE_CLIENT_ID,
     }),
   ],
+  // Type '(url: any, baseUrl: any) => Promise<any>' is not assignable to type
+  // '(params: { url: string; baseUrl: string; }) => Awaitable<string>'
   callbacks: {
-    redirect: async (url, baseUrl) => {
-      return Promise.resolve(baseUrl);
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
     },
   },
 };
 
-export default (req, res) => NextAuth(req, res, options);
+function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+  return NextAuth(req, res, options);
+}
+
+export default handler;

@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosInstance } from "axios";
+import Axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 type RequestFunction<
@@ -32,7 +32,7 @@ export function withSSP<
   return async (context) => {
     const axiosInstance = Axios.create({
       baseURL: `${process.env.NEXT_PUBLIC_CANNON_URL}/api`,
-      headers: context.req.headers,
+      headers: context.req.headers as AxiosRequestHeaders,
     });
 
     try {

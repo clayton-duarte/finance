@@ -1,8 +1,8 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, ReactNode } from "react";
 
-import { styled } from '../providers/theme'
-import Header from './Header'
-import Footer from './Footer'
+import { styled } from "../providers/theme";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const Wrapper = styled.main`
   grid-template-rows: auto 1fr auto;
@@ -10,9 +10,9 @@ const Wrapper = styled.main`
   height: 100%;
   gap: 1rem;
   grid-template-areas:
-    'header'
-    'content'
-    'footer';
+    "header"
+    "content"
+    "footer";
   > header {
     grid-area: header;
   }
@@ -22,7 +22,7 @@ const Wrapper = styled.main`
   > footer {
     grid-area: footer;
   }
-`
+`;
 
 const Content = styled.article`
   grid-template-columns: 1fr;
@@ -36,10 +36,11 @@ const Content = styled.article`
   @media (min-width: 768px) {
     grid-template-columns: 1fr 1fr;
   }
-`
+`;
 
 const Template: FunctionComponent<{
-  footerActions?: JSX.Element[]
+  footerActions?: JSX.Element[];
+  children: ReactNode;
 }> = ({ children, footerActions = [] }) => {
   return (
     <Wrapper>
@@ -47,7 +48,7 @@ const Template: FunctionComponent<{
       <Content>{children}</Content>
       <Footer actions={footerActions} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Template
+export default Template;
