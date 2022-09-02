@@ -30,7 +30,7 @@ export function withParameterValidation(...parameters: string[]) {
   };
 }
 
-const mapHandlerByMethod =
+export const mapHandlerByMethod =
   (handlersByMethod: {
     [ReqMethods.DELETE]?: NextApiHandler;
     [ReqMethods.POST]?: NextApiHandler;
@@ -38,9 +38,7 @@ const mapHandlerByMethod =
     [ReqMethods.GET]?: NextApiHandler;
   }) =>
   (req, res) => {
-    const availableHandler = handlersByMethod[req.method];
+    const availableHandler = handlersByMethod[req.method as ReqMethods];
     if (availableHandler) return availableHandler(req, res);
     return res.status(405).send("Method not Allowed");
   };
-
-export { mapHandlerByMethod };
