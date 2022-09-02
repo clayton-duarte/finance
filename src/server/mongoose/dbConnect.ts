@@ -1,14 +1,12 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const uri = `${process.env.MONGO_URL}/${process.env.MONGO_DB}`
+const uri = `${process.env.MONGO_URL}/${process.env.MONGO_DB}`;
 
-async function dbConnect() {
+export default async function dbConnect() {
   if (!mongoose.connections[0].readyState) {
     await mongoose.connect(uri, {
-      w: 'majority',
-    })
+      w: "majority",
+    });
   }
-  return
+  return;
 }
-
-export default dbConnect

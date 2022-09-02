@@ -13,10 +13,11 @@ interface SSRAppProps extends AppProps<SuccessProps> {
 }
 
 const MyApp: FunctionComponent<SSRAppProps> = ({
-  Component: Page,
+  Component,
   pageProps,
   router,
 }) => {
+  const Page = Component as FunctionComponent;
   useEffect(() => {
     // CLEAN AS PATH
     if (router.asPath.includes("#")) {
