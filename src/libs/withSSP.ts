@@ -41,7 +41,6 @@ export function withSSP<
     } catch (unknownError: unknown) {
       if (typeof unknownError === "object" && "isAxiosError" in unknownError) {
         const axiosError = unknownError as AxiosError;
-        console.log(axiosError.response.status);
 
         if (axiosError.response.status === 401) {
           return {
@@ -52,18 +51,28 @@ export function withSSP<
           };
         }
 
+        const {
+          status: statusCode,
+          data: errorMessage,
+          statusText,
+        } = axiosError.response;
+
         return {
           props: {
             success: false,
             error: {
-              statusCode: axiosError.response.status,
-              title: axiosError.response.statusText,
+              title:
+                errorMessage != null
+                  ? JSON.stringify(errorMessage)
+                  : statusText,
+              statusCode,
             },
           },
         };
       }
+
       // TODO: handle other errors
-      throw Error("Panic!");
+      throw Error(`Panic! ${unknownError}`);
     }
   };
 }

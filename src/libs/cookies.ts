@@ -1,4 +1,4 @@
-import Cookie from "universal-cookie";
+import Cookie, { CookieSetOptions } from "universal-cookie";
 
 import { Currencies } from "../types";
 
@@ -7,11 +7,16 @@ export enum CookieNames {
   TOKEN = "session-token",
 }
 
+const cookieOptions: CookieSetOptions = {
+  sameSite: "none",
+  path: "/",
+} as const;
+
 export const useCookies = () => {
   const cookie = new Cookie();
 
   const setCurrencyCookie = (currency: Currencies) => {
-    cookie.set(CookieNames.CURRENCY, currency, { path: "/" });
+    return cookie.set(CookieNames.CURRENCY, currency, cookieOptions);
   };
 
   const getCurrencyCookie = (): Currencies => {
@@ -21,7 +26,7 @@ export const useCookies = () => {
   };
 
   const setTokenCookie = (token: string) => {
-    cookie.set(CookieNames.TOKEN, token, { path: "/" });
+    return cookie.set(CookieNames.TOKEN, token, cookieOptions);
   };
 
   const getTokenCookie = (): string => {

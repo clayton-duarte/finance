@@ -3,7 +3,7 @@ import { getSession } from "next-auth/react";
 
 import { ReqMethods } from "../../types";
 
-export function withSession(handler) {
+export function withSession(handler): NextApiHandler {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     const session = await getSession({ req });
     if (session) return handler(req, res);
@@ -13,7 +13,7 @@ export function withSession(handler) {
 }
 
 export function withParameterValidation(...parameters: string[]) {
-  return function (handler: NextApiHandler) {
+  return function (handler: NextApiHandler): NextApiHandler {
     return function (req, res) {
       const missingParameter = parameters.filter(
         (parameter) => !req.body[parameter] && !req.query[parameter]
@@ -31,12 +31,9 @@ export function withParameterValidation(...parameters: string[]) {
 }
 
 export const mapHandlerByMethod =
-  (handlersByMethod: {
-    [ReqMethods.DELETE]?: NextApiHandler;
-    [ReqMethods.POST]?: NextApiHandler;
-    [ReqMethods.PUT]?: NextApiHandler;
-    [ReqMethods.GET]?: NextApiHandler;
-  }) =>
+  (
+    handlersByMethod: Partial<Record<ReqMethods, NextApiHandler>>
+  ): NextApiHandler =>
   (req, res) => {
     const availableHandler = handlersByMethod[req.method as ReqMethods];
     if (availableHandler) return availableHandler(req, res);

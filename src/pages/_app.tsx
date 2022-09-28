@@ -27,6 +27,8 @@ const MyApp: FunctionComponent<SSRAppProps> = ({
   }, [router, router.asPath]);
 
   if (pageProps.success === false) {
+    console.error(pageProps);
+
     return <Error {...pageProps.error} />;
   }
 

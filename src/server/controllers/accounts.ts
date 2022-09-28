@@ -4,66 +4,70 @@ import { getSession } from "next-auth/react";
 import { AccountModel, ProfileModel } from "../mongoose/models";
 import dbConnect from "../mongoose/dbConnect";
 
-export const getAccounts: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  await dbConnect();
+const PAGE_OFFSET = 0 as const;
+const PAGE_LIMIT = 10 as const;
 
+export const getAccounts: NextApiHandler = async (req, res) => {
   try {
-    const sharedProfile = await ProfileModel.findOne({ share: email });
-    const accounts = await AccountModel.find({
-      $or: [{ email }, { email: sharedProfile?.email }],
-    });
-    res.json(accounts);
+    const session = await getSession({ req });
+    const { email } = session.user;
+
+    await dbConnect();
+    const sharedProfile = await ProfileModel.findOne().where({ share: email });
+    const accounts = await AccountModel.find()
+      .where("email")
+      .in([email, sharedProfile?.email])
+      .skip(PAGE_LIMIT * PAGE_OFFSET)
+      .limit(PAGE_LIMIT);
+
+    return res.json(accounts);
   } catch (error) {
-    res.status(502).send(error);
+    return res.json([]);
+    return res.status(500).send(error);
   }
 };
 
 export const postAccount: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  const { account } = req.body;
-
-  await dbConnect();
   try {
+    const session = await getSession({ req });
+    const { email } = session.user;
+    const { account } = req.body;
+
+    await dbConnect();
     const results = await AccountModel.create({ ...account, email });
-    res.json(results);
+    return res.json(results);
   } catch (error) {
-    res.status(502).send(error);
+    return res.status(500).send(error);
   }
 };
 
 export const putAccount: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  const { account } = req.body;
-  await dbConnect();
-
   try {
-    const results = await AccountModel.updateOne(
-      { _id: account._id, email },
-      {
-        updatedAt: Date.now(),
-        ...account,
-      }
-    );
-    res.json(results);
+    const session = await getSession({ req });
+    const { email } = session.user;
+    const { account } = req.body;
+    await dbConnect();
+
+    const results = await AccountModel.updateOne({
+      updatedAt: Date.now(),
+      ...account,
+    }).where({ _id: account._id, email });
+    return res.json(results);
   } catch (error) {
-    res.status(502).send(error);
+    return res.status(500).send(error);
   }
 };
 
 export const deleteAccount: NextApiHandler = async (req, res) => {
-  const session = await getSession({ req });
-  const { email } = session.user;
-  const { _id } = req.query;
-  await dbConnect();
-
   try {
-    const results = await AccountModel.deleteOne({ _id, email });
-    res.json(results);
+    const session = await getSession({ req });
+    const { email } = session.user;
+    const { _id } = req.query;
+    await dbConnect();
+
+    const results = await AccountModel.deleteOne().where({ _id, email });
+    return res.json(results);
   } catch (error) {
-    res.status(502).send(error);
+    return res.status(500).send(error);
   }
 };
