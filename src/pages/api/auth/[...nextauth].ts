@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import GoogleProvider from "next-auth/providers/google";
 import NextAuth, { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
 
 const options: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
