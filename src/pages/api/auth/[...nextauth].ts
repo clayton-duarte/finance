@@ -4,14 +4,13 @@ import GoogleProvider from "next-auth/providers/google";
 
 const options: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
+  secret: process.env.SESSION_PASSWORD,
   providers: [
     GoogleProvider({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       clientId: process.env.GOOGLE_CLIENT_ID,
     }),
   ],
-  // Type '(url: any, baseUrl: any) => Promise<any>' is not assignable to type
-  // '(params: { url: string; baseUrl: string; }) => Awaitable<string>'
   callbacks: {
     async redirect({ url, baseUrl }) {
       return baseUrl;
